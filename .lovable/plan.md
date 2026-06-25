@@ -1,74 +1,90 @@
-# TBS Meridian — Backend Implementation Plan
+# Manager Dashboard — End-to-End Build Plan
 
-Enable Lovable Cloud and wire four feature areas to the database. Frontend layout/copy stays as-is; we replace mock data with live queries and add auth gating.
+Scope: 13 modules, single-group (TBS Meridian Fund I), storage included.
+Approach: ship in 5 migration+code phases so each phase is reviewable and the app stays green between them.
 
-## 1. Enable Lovable Cloud
-Provisions Postgres, Auth, server functions, and the Supabase integration (browser client, server middleware, `_authenticated` gate).
+## Phase 1 — Schema foundations (1 migration)
 
-## 2. Database schema (single migration)
+New enums and tables in `public`, all with RLS + GRANTs.
 
-```text
-app_role         enum ('admin','manager','member','applicant')
-application_status enum ('submitted','review','kyc','approved','rejected')
-audit_event_type enum ('governance','treasury','membership','portfolio','kyc')
+- Enums: `deal_status` (draft|open|closed), `payment_status` (pending|submitted|verified|paid|overdue|cancelled), `poll_status` (open|closed), `allocation_status` (requested|approved|committed|cancelled), `doc_event_type`.
+- Tables: `leadership_positions`, `deals`, `slot_allocations`, `payments`, `payment_audit`, `polls`, `poll_options`, `poll_votes`, `announcements`, `announcement_reads`, `documents`, `document_signatures`, `document_events`, `deal_votes`.
+- Extend existing: add `slot_capacity`, `subscription_terms` to `groups`; add `manager` capability fields to `portfolio_assets` if missing.
+- New role enum value `manager` already exists; ensure `applicant`, `member`, `manager`, `admin` covered.
 
-profiles         (id uuid PK → auth.users, full_name, email, created_at)
-user_roles       (id, user_id, role, group_id, unique(user_id, role))
-groups           (id, name, slug, description)            -- investment groups
-applications     (id, user_id?, group_id, full_name, email, phone,
-                  motivation, status, reviewer_id?, created_at, updated_at)
-audit_events     (id, event_type, actor_id?, group_id?, title, description,
-                  payload jsonb, hash text, prev_hash text, created_at)
-portfolio_assets (id, group_id, name, asset_type, location, acquisition_date,
-                  acquisition_value numeric, current_value numeric,
-                  target_irr numeric, realized_irr numeric, status)
-reports          (id, group_id, period date, nav numeric, distributions numeric,
-                  contributions numeric, irr numeric)
+## Phase 2 — RPCs, triggers, storage (1 migration + 2 buckets)
+
+- RPCs (SECURITY DEFINER, search_path=public):
+  - `has_group_role(uid, role, group_id)`
+  - `is_system_admin(uid)`
+  - `is_group_leader(uid, group_id)`
+  - `group_slot_availability(group_id)` → { total, allocated, available }
+  - `deal_vote_tally(deal_id)`
+  - `deal_slot_availability(deal_id)`
+  - `poll_vote_tally(poll_id)`
+- Trigger: `recompute_allocation_status` (3 leader approvals → status='approved').
+- Audit trigger on `payments` → `payment_audit`.
+- Storage buckets (private): `payment-proofs`, `group-documents`. RLS on `storage.objects` scoped by group membership/manager role.
+
+## Phase 3 — Server functions layer
+
+Create `src/lib/manager.functions.ts` and `src/lib/manager.server.ts`:
+
+- Overview: `getOverview`, `listManagedGroups`
+- Members: `listMembers`, `addMemberByEmail`*, `removeMember`*
+- Applications: already exists — extend with audit
+- Leadership: `listLeadership`, `setLeadership`*
+- Deals: `listDeals`, `createDeal`, `updateDealStatus`, `getDealDetail`
+- Allocations: `listAllocations`, `decideAllocation`*, `commitAllocation`*, `cancelAllocation`*
+- Payments: `listPayments`, `createPayment`, `updatePaymentStatus`, `getPaymentProofUrl`, `listPaymentAudit`
+- Polls: `listPolls`, `createPoll`, `closePoll`
+- Announcements: `listAnnouncements`, `createAnnouncement`, `deleteAnnouncement`
+- Documents: `listDocuments`, `createDocument` (upload), `toggleDocumentSignature`, `getDocumentDownloadUrl`
+- Portfolio: `createAsset`, `updateAsset`, `deleteAsset` (read already exists)
+- Settings: `getGroupSettings`, `updateGroupSettings`
+
+`*` = privileged ops requiring service-role (lazy-import `client.server` inside handler, after `has_role('manager')` check). No separate edge function — TanStack server fns are the boundary.
+
+## Phase 4 — Manager UI routes
+
+Replace single `/manager` with nested routes under `_authenticated/manager/`:
+
+```
+manager/index.tsx          → Overview dashboard (KPIs + charts, real data)
+manager/members.tsx        → Member list + add/remove
+manager/applications.tsx   → Existing queue (moved)
+manager/leadership.tsx     → Appoint leaders
+manager/deals.tsx          → Deals CRUD + vote tallies
+manager/allocations.tsx    → Slot requests review
+manager/payments.tsx       → Payments + proof verification
+manager/polls.tsx          → Polls CRUD + tallies
+manager/announcements.tsx  → Broadcast + read receipts
+manager/documents.tsx      → Upload + signature tracking
+manager/portfolio.tsx      → Asset CRUD
+manager/settings.tsx       → Group metadata
 ```
 
-GRANTs + RLS on every public table. `has_role(uuid, app_role)` security-definer fn. Policies:
-- profiles: self read/update; admins read all.
-- applications: applicant inserts own (or anon submits with null user_id); admin/manager read+update.
-- audit_events / portfolio_assets / reports: any authenticated member of the group reads; admin writes.
-- groups: authenticated read.
+Update `DashboardShell` nav to expose all manager links (replacing today's disabled placeholders) — gated by manager role.
 
-Trigger on `auth.users` insert → create profile + assign `applicant` role.
+## Phase 5 — Polish
 
-Seed (in migration): one default group "TBS Meridian Fund I", a few portfolio assets, sample report periods, and a couple of audit events — so the UI renders immediately.
+- Toast feedback on every mutation.
+- Audit events recorded for: application decisions, allocation decisions, payment status, document signatures, leadership changes.
+- Empty-state UI for every list.
+- Seed data: 2 deals, 1 open poll, 1 announcement, 2 payments, 3 portfolio assets (extend existing seed).
 
-## 3. Authentication
-- `/auth` route: email+password sign in/up tabs. Google OAuth button via `lovable.auth.signInWithOAuth`.
-- Configure Google provider via `supabase--configure_social_auth`.
-- Sign-out hygiene per guidance (cancel queries, clear cache, signOut, navigate replace).
-- Header on `/`: shows "Sign in" or user menu (name + sign out + "Portal" link).
+## Out of scope (explicit)
 
-## 4. Protected routes
-Under `src/routes/_authenticated/`:
-- `portal.tsx` — member dashboard: their group, holdings summary, recent audit events, latest report.
-- `manager.tsx` — gated by `has_role(admin|manager)`: applications queue with status workflow (submitted → review → kyc → approved/rejected), portfolio editor table.
-
-## 5. Application form
-- Rebuild membership "Apply" section as a real form (zod-validated: name, email, phone, motivation, group select).
-- `submitApplication` server function inserts into `applications` (status='submitted'). Works for anon and signed-in users; links to `user_id` when present. Also writes an `audit_events` row (type=membership).
-
-## 6. Audit-trail drawer
-- Replace mock list with a shadcn `Sheet` drawer triggered from existing governance section.
-- Server fn `listAuditEvents({ groupId, limit })` returns latest events with actor name joined from profiles. Public events readable by anyone authenticated; manager view sees all.
-- Render with `event_type` badge using existing status color tokens.
-
-## 7. Portfolio + Reports with charts
-- Server fns `listPortfolio(groupId)` and `listReports(groupId)`.
-- Replace static portfolio table with live data; keep existing styling.
-- Add Reports section with two recharts charts using CSS color tokens (`hsl(var(--primary))`, `--accent`, `--muted-foreground`):
-  - NAV over time (line chart)
-  - Contributions vs distributions per period (bar chart)
-- `recharts` is already in the template; no new dep.
+- Member-facing /portal counterparts to vote/sign/upload-proof — manager side first; member side flagged for follow-up.
+- Email notifications.
+- Pagination (lists assumed < 200 rows per group).
 
 ## Technical notes
-- All Supabase reads go through `createServerFn` (public reads use server publishable client; user-scoped reads use `requireSupabaseAuth`).
-- `supabaseAdmin` only inside handler bodies, imported via `await import(...)`, for the membership insert (so anon submissions bypass RLS safely) — guarded by zod validation + rate-limit-friendly shape.
-- TanStack Query: `ensureQueryData` in loaders, `useSuspenseQuery` in components.
-- No new design tokens; charts and badges reuse existing palette.
 
-## Out of scope
-- Email notifications, KYC document upload, payments, real-time subscriptions, role self-service. Roles assigned manually via SQL/admin UI for now.
+- All privileged writes use `requireSupabaseAuth` + `has_role` check before lazy-importing `supabaseAdmin`.
+- Storage RLS: manager can read/write within their group prefix `{group_id}/...`; members can upload to `payment-proofs/{group_id}/{user_id}/...`.
+- Charts reuse existing recharts patterns from current portal.
+- Group switcher deliberately omitted (single-group answer).
+- This plan touches no member-facing public routes.
+
+Ready to start with Phase 1 migration on approval.
