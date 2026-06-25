@@ -2,7 +2,9 @@ import { createFileRoute } from "@tanstack/react-router";
 import { queryOptions, useSuspenseQuery } from "@tanstack/react-query";
 import { Suspense } from "react";
 import { getMyProfile, listAuditEvents, listPortfolio, listReports } from "@/lib/tbs.functions";
-import { PortalShell } from "@/components/portal-shell";
+import { DashboardShell } from "@/components/dashboard-shell";
+import { PageHeader } from "@/components/page-header";
+
 
 const profileQO = queryOptions({ queryKey: ["me"], queryFn: () => getMyProfile() });
 const portfolioQO = queryOptions({ queryKey: ["portfolio"], queryFn: () => listPortfolio({ data: {} }) });
@@ -38,12 +40,13 @@ function PortalContent() {
   const totalValue = owned.reduce((s, a) => s + (Number(a.current_value) || 0), 0);
 
   return (
-    <PortalShell
-      email={me.profile?.email}
-      eyebrow="DASHBOARD"
-      title={`Welcome back${me.profile?.full_name ? `, ${me.profile.full_name}` : ""}.`}
-      description="Live view of your fund position, recent governance activity, and the latest reports."
-    >
+    <DashboardShell email={me.profile?.email}>
+      <PageHeader
+        eyebrow="DASHBOARD"
+        title={`Welcome back${me.profile?.full_name ? `, ${me.profile.full_name}` : ""}.`}
+        description="Live view of your fund position, recent governance activity, and the latest reports."
+      />
+
       <div className="grid gap-4 md:grid-cols-4">
         <Stat label="Portfolio value" value={currency(totalValue)} />
         <Stat label="Latest NAV" value={currency(latest?.nav ?? null)} />
@@ -86,7 +89,7 @@ function PortalContent() {
           </ul>
         </div>
       </div>
-    </PortalShell>
+    </DashboardShell>
   );
 }
 

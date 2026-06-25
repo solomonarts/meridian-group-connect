@@ -8,7 +8,8 @@ import {
   listApplications,
   updateApplicationStatus,
 } from "@/lib/tbs.functions";
-import { PortalShell } from "@/components/portal-shell";
+import { DashboardShell } from "@/components/dashboard-shell";
+import { PageHeader } from "@/components/page-header";
 
 const profileQO = queryOptions({ queryKey: ["me"], queryFn: () => getMyProfile() });
 const appsQO = queryOptions({ queryKey: ["applications"], queryFn: () => listApplications() });
@@ -46,12 +47,13 @@ function ManagerContent() {
   });
 
   return (
-    <PortalShell
-      email={me.profile?.email}
-      eyebrow="MANAGER"
-      title="Application queue"
-      description="Review incoming membership applications and progress them through KYC and approval."
-    >
+    <DashboardShell email={me.profile?.email}>
+      <PageHeader
+        eyebrow="MANAGER"
+        title="Application queue"
+        description="Review incoming membership applications and progress them through KYC and approval."
+      />
+
       {!isManager && (
         <div className="mb-6 rounded-md border border-status-warning bg-status-warning/30 px-4 py-3 text-sm text-status-warning-foreground">
           Read-only view. Ask an admin to grant you the manager role to update statuses.
@@ -106,7 +108,7 @@ function ManagerContent() {
           </tbody>
         </table>
       </div>
-    </PortalShell>
+    </DashboardShell>
   );
 }
 
