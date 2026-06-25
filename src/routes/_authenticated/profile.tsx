@@ -22,15 +22,16 @@ function ProfilePage() {
   const updateFn = useServerFn(updateMyProfile);
   const qc = useQueryClient();
   const { data } = useQuery({ queryKey: ["me"], queryFn: () => fn() });
+  const profile = data?.profile ?? null;
   const [fullName, setFullName] = useState("");
   const [country, setCountry] = useState("");
 
   useEffect(() => {
-    if (data) {
-      setFullName(data.full_name ?? "");
-      setCountry(data.country ?? "");
+    if (profile) {
+      setFullName(profile.full_name ?? "");
+      setCountry(profile.country ?? "");
     }
-  }, [data]);
+  }, [profile]);
 
   const mut = useMutation({
     mutationFn: () => updateFn({ data: { full_name: fullName, country } }),
@@ -39,7 +40,7 @@ function ProfilePage() {
   });
 
   return (
-    <DashboardShell email={data?.email ?? null}>
+    <DashboardShell email={profile?.email ?? null}>
       <PageHeader eyebrow="Profile" title="Identity & KYC" description="Maintain contact information and KYC details." />
       <Panel className="mt-6" title="Personal details">
         <div className="grid gap-4 sm:grid-cols-2">
@@ -49,7 +50,7 @@ function ProfilePage() {
           </div>
           <div>
             <Label>Email</Label>
-            <Input value={data?.email ?? ""} disabled />
+            <Input value={profile?.email ?? ""} disabled />
           </div>
           <div>
             <Label>Country</Label>
