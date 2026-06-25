@@ -379,6 +379,15 @@ function InvestmentModel() {
           </tbody>
         </table>
       </div>
+      <div className="mt-8">
+        <AuditDrawer
+          trigger={
+            <button className="rounded-md border border-border bg-white px-5 py-3 text-sm font-semibold text-foreground transition-colors hover:border-gold hover:text-gold">
+              View audit trail →
+            </button>
+          }
+        />
+      </div>
     </SectionBand>
   );
 }
