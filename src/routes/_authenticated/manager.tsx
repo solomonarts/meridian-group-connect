@@ -8,7 +8,8 @@ import {
   listApplications,
   updateApplicationStatus,
 } from "@/lib/tbs.functions";
-import { PortalShell } from "@/components/portal-shell";
+import { DashboardShell } from "@/components/dashboard-shell";
+import { PageHeader } from "@/components/page-header";
 
 const profileQO = queryOptions({ queryKey: ["me"], queryFn: () => getMyProfile() });
 const appsQO = queryOptions({ queryKey: ["applications"], queryFn: () => listApplications() });
