@@ -89,7 +89,7 @@ function PortalContent() {
           </ul>
         </div>
       </div>
-    </PortalShell>
+    </DashboardShell>
   );
 }
 
