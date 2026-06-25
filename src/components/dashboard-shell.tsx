@@ -9,6 +9,16 @@ type NavItem = { label: string; to: string };
 
 const MEMBER_NAV: NavItem[] = [
   { label: "Dashboard", to: "/portal" },
+  { label: "Deal Room", to: "/deals" },
+  { label: "Voting", to: "/voting" },
+  { label: "Allocations", to: "/allocations" },
+  { label: "Portfolio", to: "/portfolio" },
+  { label: "Documents", to: "/documents" },
+  { label: "Announcements", to: "/announcements" },
+  { label: "Payments", to: "/payments" },
+  { label: "Reports", to: "/reports" },
+  { label: "Profile", to: "/profile" },
+  { label: "Settings", to: "/settings" },
 ];
 
 const MANAGER_NAV: NavItem[] = [

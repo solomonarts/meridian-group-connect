@@ -3,15 +3,25 @@ import type { ReactNode } from "react";
 export function Panel({
   children,
   className = "",
+  title,
+  subtitle,
 }: {
   children: ReactNode;
   className?: string;
+  title?: ReactNode;
+  subtitle?: ReactNode;
 }) {
   return (
     <div
       className={`rounded-2xl border border-border bg-white p-6 ${className}`}
       style={{ boxShadow: "var(--shadow-elegant)" }}
     >
+      {(title || subtitle) && (
+        <div className="mb-4">
+          {title && <div className="text-base font-semibold text-foreground">{title}</div>}
+          {subtitle && <div className="mt-1 text-xs text-muted-foreground">{subtitle}</div>}
+        </div>
+      )}
       {children}
     </div>
   );
@@ -84,17 +94,21 @@ export function StatusPill({
   tone = "gold",
   children,
 }: {
-  tone?: "gold" | "success" | "danger" | "navy";
+  tone?: "gold" | "success" | "danger" | "navy" | "ok" | "warn" | "muted";
   children: ReactNode;
 }) {
   const cls =
-    tone === "success"
+    tone === "success" || tone === "ok"
       ? "bg-status-success text-status-success-foreground"
       : tone === "danger"
         ? "bg-destructive/10 text-destructive"
         : tone === "navy"
           ? "bg-navy text-gold"
-          : "bg-gold/25 text-navy";
+          : tone === "muted"
+            ? "bg-muted text-muted-foreground"
+            : tone === "warn"
+              ? "bg-gold/30 text-navy"
+              : "bg-gold/25 text-navy";
   return (
     <span
       className={`inline-flex items-center rounded-full px-3 py-1 text-[11px] font-semibold uppercase tracking-wider ${cls}`}
