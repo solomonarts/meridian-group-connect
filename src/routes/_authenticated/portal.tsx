@@ -2,7 +2,9 @@ import { createFileRoute } from "@tanstack/react-router";
 import { queryOptions, useSuspenseQuery } from "@tanstack/react-query";
 import { Suspense } from "react";
 import { getMyProfile, listAuditEvents, listPortfolio, listReports } from "@/lib/tbs.functions";
-import { PortalShell } from "@/components/portal-shell";
+import { DashboardShell } from "@/components/dashboard-shell";
+import { PageHeader } from "@/components/page-header";
+
 
 const profileQO = queryOptions({ queryKey: ["me"], queryFn: () => getMyProfile() });
 const portfolioQO = queryOptions({ queryKey: ["portfolio"], queryFn: () => listPortfolio({ data: {} }) });
