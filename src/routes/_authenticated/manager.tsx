@@ -47,12 +47,13 @@ function ManagerContent() {
   });
 
   return (
-    <PortalShell
-      email={me.profile?.email}
-      eyebrow="MANAGER"
-      title="Application queue"
-      description="Review incoming membership applications and progress them through KYC and approval."
-    >
+    <DashboardShell email={me.profile?.email}>
+      <PageHeader
+        eyebrow="MANAGER"
+        title="Application queue"
+        description="Review incoming membership applications and progress them through KYC and approval."
+      />
+
       {!isManager && (
         <div className="mb-6 rounded-md border border-status-warning bg-status-warning/30 px-4 py-3 text-sm text-status-warning-foreground">
           Read-only view. Ask an admin to grant you the manager role to update statuses.
