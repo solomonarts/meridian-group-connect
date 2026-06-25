@@ -108,7 +108,7 @@ function ManagerContent() {
           </tbody>
         </table>
       </div>
-    </PortalShell>
+    </DashboardShell>
   );
 }
 
