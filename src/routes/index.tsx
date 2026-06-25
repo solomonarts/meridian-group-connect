@@ -62,12 +62,19 @@ function Home() {
 function Header() {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
+  const [signedIn, setSignedIn] = useState(false);
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 8);
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
+    supabase.auth.getSession().then(({ data }) => setSignedIn(!!data.session));
+    const { data: sub } = supabase.auth.onAuthStateChange((_e, session) => setSignedIn(!!session));
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      sub.subscription.unsubscribe();
+    };
   }, []);
+
 
   return (
     <header
@@ -98,19 +105,29 @@ function Header() {
           ))}
         </nav>
         <div className="flex items-center gap-2">
+          {signedIn ? (
+            <Link
+              to="/portal"
+              className="hidden rounded-md border border-white/15 px-4 py-2 text-sm font-semibold text-navy-foreground/90 transition-colors hover:border-gold hover:text-gold md:inline-flex"
+            >
+              Portal
+            </Link>
+          ) : (
+            <Link
+              to="/auth"
+              className="hidden rounded-md border border-white/15 px-4 py-2 text-sm font-semibold text-navy-foreground/90 transition-colors hover:border-gold hover:text-gold md:inline-flex"
+            >
+              Sign in
+            </Link>
+          )}
           <a
-            href="#membership"
-            className="hidden rounded-md border border-white/15 px-4 py-2 text-sm font-semibold text-navy-foreground/90 transition-colors hover:border-gold hover:text-gold md:inline-flex"
-          >
-            Login
-          </a>
-          <a
-            href="#membership"
+            href="#apply"
             className="rounded-md px-4 py-2 text-sm font-semibold text-navy-ink transition-transform hover:-translate-y-px"
             style={{ background: "var(--gradient-gold)", boxShadow: "var(--shadow-glow)" }}
           >
             Apply
           </a>
+
           <button
             type="button"
             aria-label="Toggle menu"
