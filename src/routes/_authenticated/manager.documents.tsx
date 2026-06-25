@@ -43,7 +43,6 @@ function Content() {
         mime_type: file.type, size_bytes: file.size, requires_signature: requires,
       });
       if (error) throw error;
-      await supabase.from("document_events").insert({ document_id: null as any, event_type: "uploaded" }).then(() => {});
       qc.invalidateQueries({ queryKey: ["mgr", "documents"] });
       toast.success("Uploaded");
       setTitle(""); setFile(null); setRequires(false);

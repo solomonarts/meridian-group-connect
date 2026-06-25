@@ -13,6 +13,18 @@ import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthenticatedPortalRouteImport } from './routes/_authenticated/portal'
+import { Route as AuthenticatedManagerIndexRouteImport } from './routes/_authenticated/manager.index'
+import { Route as AuthenticatedManagerSettingsRouteImport } from './routes/_authenticated/manager.settings'
+import { Route as AuthenticatedManagerPortfolioRouteImport } from './routes/_authenticated/manager.portfolio'
+import { Route as AuthenticatedManagerPollsRouteImport } from './routes/_authenticated/manager.polls'
+import { Route as AuthenticatedManagerPaymentsRouteImport } from './routes/_authenticated/manager.payments'
+import { Route as AuthenticatedManagerMembersRouteImport } from './routes/_authenticated/manager.members'
+import { Route as AuthenticatedManagerLeadershipRouteImport } from './routes/_authenticated/manager.leadership'
+import { Route as AuthenticatedManagerDocumentsRouteImport } from './routes/_authenticated/manager.documents'
+import { Route as AuthenticatedManagerDealsRouteImport } from './routes/_authenticated/manager.deals'
+import { Route as AuthenticatedManagerApplicationsRouteImport } from './routes/_authenticated/manager.applications'
+import { Route as AuthenticatedManagerAnnouncementsRouteImport } from './routes/_authenticated/manager.announcements'
+import { Route as AuthenticatedManagerAllocationsRouteImport } from './routes/_authenticated/manager.allocations'
 
 const AuthRoute = AuthRouteImport.update({
   id: '/auth',
@@ -33,16 +45,112 @@ const AuthenticatedPortalRoute = AuthenticatedPortalRouteImport.update({
   path: '/portal',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedManagerIndexRoute =
+  AuthenticatedManagerIndexRouteImport.update({
+    id: '/manager/',
+    path: '/manager/',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedManagerSettingsRoute =
+  AuthenticatedManagerSettingsRouteImport.update({
+    id: '/manager/settings',
+    path: '/manager/settings',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedManagerPortfolioRoute =
+  AuthenticatedManagerPortfolioRouteImport.update({
+    id: '/manager/portfolio',
+    path: '/manager/portfolio',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedManagerPollsRoute =
+  AuthenticatedManagerPollsRouteImport.update({
+    id: '/manager/polls',
+    path: '/manager/polls',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedManagerPaymentsRoute =
+  AuthenticatedManagerPaymentsRouteImport.update({
+    id: '/manager/payments',
+    path: '/manager/payments',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedManagerMembersRoute =
+  AuthenticatedManagerMembersRouteImport.update({
+    id: '/manager/members',
+    path: '/manager/members',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedManagerLeadershipRoute =
+  AuthenticatedManagerLeadershipRouteImport.update({
+    id: '/manager/leadership',
+    path: '/manager/leadership',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedManagerDocumentsRoute =
+  AuthenticatedManagerDocumentsRouteImport.update({
+    id: '/manager/documents',
+    path: '/manager/documents',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedManagerDealsRoute =
+  AuthenticatedManagerDealsRouteImport.update({
+    id: '/manager/deals',
+    path: '/manager/deals',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedManagerApplicationsRoute =
+  AuthenticatedManagerApplicationsRouteImport.update({
+    id: '/manager/applications',
+    path: '/manager/applications',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedManagerAnnouncementsRoute =
+  AuthenticatedManagerAnnouncementsRouteImport.update({
+    id: '/manager/announcements',
+    path: '/manager/announcements',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedManagerAllocationsRoute =
+  AuthenticatedManagerAllocationsRouteImport.update({
+    id: '/manager/allocations',
+    path: '/manager/allocations',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/portal': typeof AuthenticatedPortalRoute
+  '/manager/allocations': typeof AuthenticatedManagerAllocationsRoute
+  '/manager/announcements': typeof AuthenticatedManagerAnnouncementsRoute
+  '/manager/applications': typeof AuthenticatedManagerApplicationsRoute
+  '/manager/deals': typeof AuthenticatedManagerDealsRoute
+  '/manager/documents': typeof AuthenticatedManagerDocumentsRoute
+  '/manager/leadership': typeof AuthenticatedManagerLeadershipRoute
+  '/manager/members': typeof AuthenticatedManagerMembersRoute
+  '/manager/payments': typeof AuthenticatedManagerPaymentsRoute
+  '/manager/polls': typeof AuthenticatedManagerPollsRoute
+  '/manager/portfolio': typeof AuthenticatedManagerPortfolioRoute
+  '/manager/settings': typeof AuthenticatedManagerSettingsRoute
+  '/manager/': typeof AuthenticatedManagerIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/portal': typeof AuthenticatedPortalRoute
+  '/manager/allocations': typeof AuthenticatedManagerAllocationsRoute
+  '/manager/announcements': typeof AuthenticatedManagerAnnouncementsRoute
+  '/manager/applications': typeof AuthenticatedManagerApplicationsRoute
+  '/manager/deals': typeof AuthenticatedManagerDealsRoute
+  '/manager/documents': typeof AuthenticatedManagerDocumentsRoute
+  '/manager/leadership': typeof AuthenticatedManagerLeadershipRoute
+  '/manager/members': typeof AuthenticatedManagerMembersRoute
+  '/manager/payments': typeof AuthenticatedManagerPaymentsRoute
+  '/manager/polls': typeof AuthenticatedManagerPollsRoute
+  '/manager/portfolio': typeof AuthenticatedManagerPortfolioRoute
+  '/manager/settings': typeof AuthenticatedManagerSettingsRoute
+  '/manager': typeof AuthenticatedManagerIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -50,13 +158,72 @@ export interface FileRoutesById {
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/auth': typeof AuthRoute
   '/_authenticated/portal': typeof AuthenticatedPortalRoute
+  '/_authenticated/manager/allocations': typeof AuthenticatedManagerAllocationsRoute
+  '/_authenticated/manager/announcements': typeof AuthenticatedManagerAnnouncementsRoute
+  '/_authenticated/manager/applications': typeof AuthenticatedManagerApplicationsRoute
+  '/_authenticated/manager/deals': typeof AuthenticatedManagerDealsRoute
+  '/_authenticated/manager/documents': typeof AuthenticatedManagerDocumentsRoute
+  '/_authenticated/manager/leadership': typeof AuthenticatedManagerLeadershipRoute
+  '/_authenticated/manager/members': typeof AuthenticatedManagerMembersRoute
+  '/_authenticated/manager/payments': typeof AuthenticatedManagerPaymentsRoute
+  '/_authenticated/manager/polls': typeof AuthenticatedManagerPollsRoute
+  '/_authenticated/manager/portfolio': typeof AuthenticatedManagerPortfolioRoute
+  '/_authenticated/manager/settings': typeof AuthenticatedManagerSettingsRoute
+  '/_authenticated/manager/': typeof AuthenticatedManagerIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/auth' | '/portal'
+  fullPaths:
+    | '/'
+    | '/auth'
+    | '/portal'
+    | '/manager/allocations'
+    | '/manager/announcements'
+    | '/manager/applications'
+    | '/manager/deals'
+    | '/manager/documents'
+    | '/manager/leadership'
+    | '/manager/members'
+    | '/manager/payments'
+    | '/manager/polls'
+    | '/manager/portfolio'
+    | '/manager/settings'
+    | '/manager/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/auth' | '/portal'
-  id: '__root__' | '/' | '/_authenticated' | '/auth' | '/_authenticated/portal'
+  to:
+    | '/'
+    | '/auth'
+    | '/portal'
+    | '/manager/allocations'
+    | '/manager/announcements'
+    | '/manager/applications'
+    | '/manager/deals'
+    | '/manager/documents'
+    | '/manager/leadership'
+    | '/manager/members'
+    | '/manager/payments'
+    | '/manager/polls'
+    | '/manager/portfolio'
+    | '/manager/settings'
+    | '/manager'
+  id:
+    | '__root__'
+    | '/'
+    | '/_authenticated'
+    | '/auth'
+    | '/_authenticated/portal'
+    | '/_authenticated/manager/allocations'
+    | '/_authenticated/manager/announcements'
+    | '/_authenticated/manager/applications'
+    | '/_authenticated/manager/deals'
+    | '/_authenticated/manager/documents'
+    | '/_authenticated/manager/leadership'
+    | '/_authenticated/manager/members'
+    | '/_authenticated/manager/payments'
+    | '/_authenticated/manager/polls'
+    | '/_authenticated/manager/portfolio'
+    | '/_authenticated/manager/settings'
+    | '/_authenticated/manager/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -95,15 +262,124 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedPortalRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/manager/': {
+      id: '/_authenticated/manager/'
+      path: '/manager'
+      fullPath: '/manager/'
+      preLoaderRoute: typeof AuthenticatedManagerIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/manager/settings': {
+      id: '/_authenticated/manager/settings'
+      path: '/manager/settings'
+      fullPath: '/manager/settings'
+      preLoaderRoute: typeof AuthenticatedManagerSettingsRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/manager/portfolio': {
+      id: '/_authenticated/manager/portfolio'
+      path: '/manager/portfolio'
+      fullPath: '/manager/portfolio'
+      preLoaderRoute: typeof AuthenticatedManagerPortfolioRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/manager/polls': {
+      id: '/_authenticated/manager/polls'
+      path: '/manager/polls'
+      fullPath: '/manager/polls'
+      preLoaderRoute: typeof AuthenticatedManagerPollsRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/manager/payments': {
+      id: '/_authenticated/manager/payments'
+      path: '/manager/payments'
+      fullPath: '/manager/payments'
+      preLoaderRoute: typeof AuthenticatedManagerPaymentsRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/manager/members': {
+      id: '/_authenticated/manager/members'
+      path: '/manager/members'
+      fullPath: '/manager/members'
+      preLoaderRoute: typeof AuthenticatedManagerMembersRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/manager/leadership': {
+      id: '/_authenticated/manager/leadership'
+      path: '/manager/leadership'
+      fullPath: '/manager/leadership'
+      preLoaderRoute: typeof AuthenticatedManagerLeadershipRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/manager/documents': {
+      id: '/_authenticated/manager/documents'
+      path: '/manager/documents'
+      fullPath: '/manager/documents'
+      preLoaderRoute: typeof AuthenticatedManagerDocumentsRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/manager/deals': {
+      id: '/_authenticated/manager/deals'
+      path: '/manager/deals'
+      fullPath: '/manager/deals'
+      preLoaderRoute: typeof AuthenticatedManagerDealsRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/manager/applications': {
+      id: '/_authenticated/manager/applications'
+      path: '/manager/applications'
+      fullPath: '/manager/applications'
+      preLoaderRoute: typeof AuthenticatedManagerApplicationsRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/manager/announcements': {
+      id: '/_authenticated/manager/announcements'
+      path: '/manager/announcements'
+      fullPath: '/manager/announcements'
+      preLoaderRoute: typeof AuthenticatedManagerAnnouncementsRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/manager/allocations': {
+      id: '/_authenticated/manager/allocations'
+      path: '/manager/allocations'
+      fullPath: '/manager/allocations'
+      preLoaderRoute: typeof AuthenticatedManagerAllocationsRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
   }
 }
 
 interface AuthenticatedRouteRouteChildren {
   AuthenticatedPortalRoute: typeof AuthenticatedPortalRoute
+  AuthenticatedManagerAllocationsRoute: typeof AuthenticatedManagerAllocationsRoute
+  AuthenticatedManagerAnnouncementsRoute: typeof AuthenticatedManagerAnnouncementsRoute
+  AuthenticatedManagerApplicationsRoute: typeof AuthenticatedManagerApplicationsRoute
+  AuthenticatedManagerDealsRoute: typeof AuthenticatedManagerDealsRoute
+  AuthenticatedManagerDocumentsRoute: typeof AuthenticatedManagerDocumentsRoute
+  AuthenticatedManagerLeadershipRoute: typeof AuthenticatedManagerLeadershipRoute
+  AuthenticatedManagerMembersRoute: typeof AuthenticatedManagerMembersRoute
+  AuthenticatedManagerPaymentsRoute: typeof AuthenticatedManagerPaymentsRoute
+  AuthenticatedManagerPollsRoute: typeof AuthenticatedManagerPollsRoute
+  AuthenticatedManagerPortfolioRoute: typeof AuthenticatedManagerPortfolioRoute
+  AuthenticatedManagerSettingsRoute: typeof AuthenticatedManagerSettingsRoute
+  AuthenticatedManagerIndexRoute: typeof AuthenticatedManagerIndexRoute
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedPortalRoute: AuthenticatedPortalRoute,
+  AuthenticatedManagerAllocationsRoute: AuthenticatedManagerAllocationsRoute,
+  AuthenticatedManagerAnnouncementsRoute:
+    AuthenticatedManagerAnnouncementsRoute,
+  AuthenticatedManagerApplicationsRoute: AuthenticatedManagerApplicationsRoute,
+  AuthenticatedManagerDealsRoute: AuthenticatedManagerDealsRoute,
+  AuthenticatedManagerDocumentsRoute: AuthenticatedManagerDocumentsRoute,
+  AuthenticatedManagerLeadershipRoute: AuthenticatedManagerLeadershipRoute,
+  AuthenticatedManagerMembersRoute: AuthenticatedManagerMembersRoute,
+  AuthenticatedManagerPaymentsRoute: AuthenticatedManagerPaymentsRoute,
+  AuthenticatedManagerPollsRoute: AuthenticatedManagerPollsRoute,
+  AuthenticatedManagerPortfolioRoute: AuthenticatedManagerPortfolioRoute,
+  AuthenticatedManagerSettingsRoute: AuthenticatedManagerSettingsRoute,
+  AuthenticatedManagerIndexRoute: AuthenticatedManagerIndexRoute,
 }
 
 const AuthenticatedRouteRouteWithChildren =
