@@ -106,7 +106,7 @@ export const listMyAllocations = createServerFn({ method: "GET" })
       .eq("user_id", context.userId)
       .order("created_at", { ascending: false });
     if (error) throw new Error(error.message);
-    const dealIds = Array.from(new Set((rows ?? []).map((r) => r.deal_id).filter(Boolean)));
+    const dealIds = Array.from(new Set((rows ?? []).map((r) => r.deal_id).filter((x): x is string => !!x)));
     const { data: deals } = dealIds.length
       ? await context.supabase.from("deals").select("id, title").in("id", dealIds)
       : { data: [] as any[] };
@@ -182,7 +182,7 @@ export const getDocumentSignedUrl = createServerFn({ method: "POST" })
     await supabaseAdmin.from("document_events").insert({
       document_id: doc.id,
       user_id: context.userId,
-      event_type: "view",
+      event_type: "viewed",
     });
     return { url: signed.signedUrl };
   });
@@ -200,7 +200,7 @@ export const signDocument = createServerFn({ method: "POST" })
     await supabaseAdmin.from("document_events").insert({
       document_id: data.documentId,
       user_id: context.userId,
-      event_type: "sign",
+      event_type: "signed",
     });
     return { ok: true };
   });
