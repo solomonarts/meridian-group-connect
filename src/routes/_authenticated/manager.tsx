@@ -46,65 +46,67 @@ function ManagerContent() {
   });
 
   return (
-    <PortalShell email={me.profile?.email}>
-      <section className="mx-auto max-w-7xl px-6 py-12">
-        <div className="text-xs font-semibold tracking-[0.25em] text-gold">MANAGER</div>
-        <h1 className="mt-2 text-3xl font-bold">Application queue</h1>
-        {!isManager && (
-          <div className="mt-4 rounded-md border border-status-warning bg-status-warning/30 px-4 py-3 text-sm text-status-warning-foreground">
-            Read-only view. Ask an admin to grant you the manager role to update statuses.
-          </div>
-        )}
-
-        <div className="mt-8 overflow-hidden rounded-xl border border-border bg-white" style={{ boxShadow: "var(--shadow-elegant)" }}>
-          <table className="w-full text-left text-sm">
-            <thead className="bg-navy text-navy-foreground">
-              <tr>
-                <th className="px-4 py-3 font-semibold">Applicant</th>
-                <th className="px-4 py-3 font-semibold">Email</th>
-                <th className="px-4 py-3 font-semibold">Country</th>
-                <th className="px-4 py-3 font-semibold">Slots</th>
-                <th className="px-4 py-3 font-semibold">Submitted</th>
-                <th className="px-4 py-3 font-semibold">Status</th>
-              </tr>
-            </thead>
-            <tbody>
-              {apps.length === 0 && (
-                <tr>
-                  <td colSpan={6} className="px-4 py-8 text-center text-muted-foreground">
-                    No applications yet.
-                  </td>
-                </tr>
-              )}
-              {apps.map((a) => (
-                <tr key={a.id} className="border-t border-border">
-                  <td className="px-4 py-3 font-semibold">{a.full_name}</td>
-                  <td className="px-4 py-3 text-muted-foreground">{a.email}</td>
-                  <td className="px-4 py-3 text-muted-foreground">{a.country ?? "—"}</td>
-                  <td className="px-4 py-3">{a.slots_requested ?? "—"}</td>
-                  <td className="px-4 py-3 text-muted-foreground">{new Date(a.created_at).toLocaleDateString()}</td>
-                  <td className="px-4 py-3">
-                    <select
-                      disabled={!isManager || mutation.isPending}
-                      value={a.status}
-                      onChange={(e) =>
-                        mutation.mutate({ id: a.id, status: e.target.value as (typeof STATUSES)[number] })
-                      }
-                      className="rounded-md border border-border bg-white px-2 py-1 text-xs font-semibold"
-                    >
-                      {STATUSES.map((s) => (
-                        <option key={s} value={s}>
-                          {s}
-                        </option>
-                      ))}
-                    </select>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+    <PortalShell
+      email={me.profile?.email}
+      eyebrow="MANAGER"
+      title="Application queue"
+      description="Review incoming membership applications and progress them through KYC and approval."
+    >
+      {!isManager && (
+        <div className="mb-6 rounded-md border border-status-warning bg-status-warning/30 px-4 py-3 text-sm text-status-warning-foreground">
+          Read-only view. Ask an admin to grant you the manager role to update statuses.
         </div>
-      </section>
+      )}
+
+      <div className="overflow-hidden rounded-xl border border-border bg-white" style={{ boxShadow: "var(--shadow-elegant)" }}>
+        <table className="w-full text-left text-sm">
+          <thead className="bg-navy text-navy-foreground">
+            <tr>
+              <th className="px-4 py-3 font-semibold">Applicant</th>
+              <th className="px-4 py-3 font-semibold">Email</th>
+              <th className="px-4 py-3 font-semibold">Country</th>
+              <th className="px-4 py-3 font-semibold">Slots</th>
+              <th className="px-4 py-3 font-semibold">Submitted</th>
+              <th className="px-4 py-3 font-semibold">Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            {apps.length === 0 && (
+              <tr>
+                <td colSpan={6} className="px-4 py-8 text-center text-muted-foreground">
+                  No applications yet.
+                </td>
+              </tr>
+            )}
+            {apps.map((a) => (
+              <tr key={a.id} className="border-t border-border">
+                <td className="px-4 py-3 font-semibold">{a.full_name}</td>
+                <td className="px-4 py-3 text-muted-foreground">{a.email}</td>
+                <td className="px-4 py-3 text-muted-foreground">{a.country ?? "—"}</td>
+                <td className="px-4 py-3">{a.slots_requested ?? "—"}</td>
+                <td className="px-4 py-3 text-muted-foreground">{new Date(a.created_at).toLocaleDateString()}</td>
+                <td className="px-4 py-3">
+                  <select
+                    disabled={!isManager || mutation.isPending}
+                    value={a.status}
+                    onChange={(e) =>
+                      mutation.mutate({ id: a.id, status: e.target.value as (typeof STATUSES)[number] })
+                    }
+                    className="rounded-md border border-border bg-white px-2 py-1 text-xs font-semibold"
+                  >
+                    {STATUSES.map((s) => (
+                      <option key={s} value={s}>
+                        {s}
+                      </option>
+                    ))}
+                  </select>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </PortalShell>
   );
 }
+
