@@ -457,7 +457,7 @@ function Portfolio() {
         Income assets under ownership, review, and future targeting.
       </h2>
       <p className="mt-3 max-w-2xl text-sm text-muted-foreground">
-        Placeholder portfolio data shows current priorities, assets under review, and future acquisition directions.
+        Live portfolio data: current priorities, assets under review, and future acquisition directions.
       </p>
       <div className="mt-10 grid gap-4 md:grid-cols-4">
         {categories.map((c) => (
@@ -466,39 +466,18 @@ function Portfolio() {
           </div>
         ))}
       </div>
-      <div className="mt-10 grid gap-5 md:grid-cols-2">
-        {assets.map((a) => (
-          <div key={a.name} className="rounded-xl border border-border bg-white p-6" style={{ boxShadow: "var(--shadow-elegant)" }}>
-            <div className="flex items-start justify-between gap-4">
-              <div>
-                <h3 className="text-lg font-semibold text-foreground">{a.name}</h3>
-                <div className="mt-1 text-sm text-muted-foreground">{a.location}</div>
-              </div>
-              <span className={`rounded-md px-3 py-1 text-[10px] font-semibold uppercase tracking-wider ${badgeClass(a.tone)}`}>
-                {a.badge}
-              </span>
-            </div>
-            <p className="mt-4 text-sm leading-relaxed text-muted-foreground">{a.description}</p>
-            <div className="mt-5 grid grid-cols-2 gap-4 text-sm">
-              <div>
-                <div className="text-xs text-muted-foreground">Asset type</div>
-                <div className="font-semibold text-foreground">{a.type}</div>
-              </div>
-              <div>
-                <div className="text-xs text-muted-foreground">Asset value</div>
-                <div className="font-semibold text-foreground">{a.value}</div>
-              </div>
-              <div>
-                <div className="text-xs text-muted-foreground">Income type</div>
-                <div className="font-semibold text-foreground">{a.income}</div>
-              </div>
-              <div>
-                <div className="text-xs text-muted-foreground">Member allocation</div>
-                <div className="font-semibold text-foreground">{a.allocation}</div>
-              </div>
-            </div>
-          </div>
-        ))}
+      <div className="mt-10">
+        <LivePortfolio />
+      </div>
+      <div className="mt-16">
+        <div className="text-xs font-semibold tracking-[0.25em] text-gold">REPORTS</div>
+        <h3 className="mt-2 text-2xl font-bold tracking-tight">NAV and capital flows</h3>
+        <p className="mt-2 max-w-2xl text-sm text-muted-foreground">
+          Reporting periods captured by the treasury lead and reconciled against member records.
+        </p>
+        <div className="mt-6">
+          <ReportsCharts />
+        </div>
       </div>
     </SectionBand>
   );
@@ -659,39 +638,7 @@ function Membership() {
           ))}
         </div>
 
-        <form
-          id="apply"
-          onSubmit={(e) => e.preventDefault()}
-          className="mt-14 grid max-w-3xl gap-4 rounded-2xl border border-white/[0.08] bg-white/[0.04] p-6 backdrop-blur-sm sm:grid-cols-2"
-        >
-          <input
-            type="text"
-            placeholder="Full name"
-            className="rounded-md border border-white/15 bg-white/[0.04] px-4 py-3 text-sm text-navy-foreground placeholder:text-navy-muted focus:border-gold focus:outline-none"
-          />
-          <input
-            type="email"
-            placeholder="Email"
-            className="rounded-md border border-white/15 bg-white/[0.04] px-4 py-3 text-sm text-navy-foreground placeholder:text-navy-muted focus:border-gold focus:outline-none"
-          />
-          <input
-            type="text"
-            placeholder="Country"
-            className="rounded-md border border-white/15 bg-white/[0.04] px-4 py-3 text-sm text-navy-foreground placeholder:text-navy-muted focus:border-gold focus:outline-none"
-          />
-          <input
-            type="text"
-            placeholder="Slots requested (1–5)"
-            className="rounded-md border border-white/15 bg-white/[0.04] px-4 py-3 text-sm text-navy-foreground placeholder:text-navy-muted focus:border-gold focus:outline-none"
-          />
-          <button
-            type="submit"
-            className="sm:col-span-2 rounded-md px-6 py-3 text-sm font-semibold text-navy-ink transition-transform hover:-translate-y-px"
-            style={{ background: "var(--gradient-gold)", boxShadow: "var(--shadow-glow)" }}
-          >
-            Submit application
-          </button>
-        </form>
+        <ApplyForm />
       </div>
     </section>
   );
