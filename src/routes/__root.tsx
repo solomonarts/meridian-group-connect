@@ -84,11 +84,14 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { property: "og:title", content: "TBS Meridian Realities" },
       { property: "og:description", content: "Members-only access to institutional real estate and private deals." },
       { property: "og:type", content: "website" },
+      { property: "og:image", content: "/__l5e/assets-v1/aa155671-e7ac-41f6-a78c-be3a1ef49be1/tbs-meridian-logo.jpeg" },
       { name: "twitter:card", content: "summary" },
-      { name: "twitter:site", content: "@Lovable" },
+      { name: "twitter:image", content: "/__l5e/assets-v1/aa155671-e7ac-41f6-a78c-be3a1ef49be1/tbs-meridian-logo.jpeg" },
     ],
     links: [
       { rel: "stylesheet", href: appCss },
+      { rel: "icon", type: "image/jpeg", href: "/__l5e/assets-v1/aa155671-e7ac-41f6-a78c-be3a1ef49be1/tbs-meridian-logo.jpeg" },
+      { rel: "apple-touch-icon", href: "/__l5e/assets-v1/aa155671-e7ac-41f6-a78c-be3a1ef49be1/tbs-meridian-logo.jpeg" },
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "" },
       {
