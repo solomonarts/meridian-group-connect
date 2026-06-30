@@ -4,6 +4,7 @@ import { useState, type ReactNode } from "react";
 import { Menu, X } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { Sheet, SheetContent, SheetTitle } from "@/components/ui/sheet";
+import tbsLogo from "@/assets/tbs-logo.jpeg.asset.json";
 
 type NavItem = { label: string; to: string };
 
@@ -52,9 +53,12 @@ function SidebarBody({
   const label = inManager ? "MANAGER CONSOLE" : "MEMBER PORTAL";
   return (
     <div className="flex h-full w-full flex-col text-navy-foreground" style={{ background: "var(--gradient-navy)" }}>
-      <div className="px-6 pt-8 pb-8">
-        <div className="text-2xl font-bold tracking-[0.2em]">TBS</div>
-        <div className="mt-1 text-[10px] font-semibold tracking-[0.3em] text-gold/90">{label}</div>
+      <div className="flex items-center gap-3 px-6 pt-8 pb-8">
+        <img src={tbsLogo.url} alt="TBS Meridian Realities" className="h-12 w-12 rounded-md object-cover ring-1 ring-white/10" />
+        <div>
+          <div className="text-base font-bold tracking-[0.18em]">TBS MERIDIAN</div>
+          <div className="mt-0.5 text-[10px] font-semibold tracking-[0.3em] text-gold/90">{label}</div>
+        </div>
       </div>
       <nav className="flex-1 overflow-y-auto px-3">
         <ul className="space-y-1">
