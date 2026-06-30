@@ -12,6 +12,19 @@ import { DEFAULT_GROUP_ID } from "@/lib/tbs.functions";
 const qo = queryOptions({ queryKey: ["mgr", "documents"], queryFn: () => listDocuments({ data: {} }) });
 
 export const Route = createFileRoute("/_authenticated/manager/documents")({
+  head: () => ({
+    meta: [
+      { title: "Manage documents — TBS Meridian Realities" },
+      { name: "description", content: "Upload and manage TBS Meridian agreements, memos, and statements." },
+      { property: "og:title", content: "Manage documents — TBS Meridian Realities" },
+      { property: "og:description", content: "Upload and manage TBS Meridian agreements, memos, and statements." },
+      { property: "og:url", content: "/manager/documents" },
+      { name: "twitter:title", content: "Manage documents — TBS Meridian Realities" },
+      { name: "twitter:description", content: "Upload and manage TBS Meridian agreements, memos, and statements." },
+      { name: "robots", content: "noindex, nofollow" },
+    ],
+    links: [{ rel: "canonical", href: "/manager/documents" }],
+  }),
   component: () => (
     <ManagerPage eyebrow="MANAGER" title="Documents" description="Upload group documents and track signatures.">
       <Content />

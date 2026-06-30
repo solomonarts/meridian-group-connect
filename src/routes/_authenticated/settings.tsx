@@ -10,6 +10,19 @@ import { Label } from "@/components/ui/label";
 import { supabase } from "@/integrations/supabase/client";
 
 export const Route = createFileRoute("/_authenticated/settings")({
+  head: () => ({
+    meta: [
+      { title: "Account settings — TBS Meridian Realities" },
+      { name: "description", content: "Manage security and sessions for your TBS Meridian account." },
+      { property: "og:title", content: "Account settings — TBS Meridian Realities" },
+      { property: "og:description", content: "Manage security and sessions for your TBS Meridian account." },
+      { property: "og:url", content: "/settings" },
+      { name: "twitter:title", content: "Account settings — TBS Meridian Realities" },
+      { name: "twitter:description", content: "Manage security and sessions for your TBS Meridian account." },
+      { name: "robots", content: "noindex, nofollow" },
+    ],
+    links: [{ rel: "canonical", href: "/settings" }],
+  }),
   component: SettingsPage,
   errorComponent: ErrorComponent,
 });

@@ -8,6 +8,19 @@ import { ChartTooltip, Panel } from "@/components/dashboard-ui";
 import { listReports } from "@/lib/tbs.functions";
 
 export const Route = createFileRoute("/_authenticated/reports")({
+  head: () => ({
+    meta: [
+      { title: "Reports — TBS Meridian Realities" },
+      { name: "description", content: "NAV trends and financial statements for TBS Meridian Fund I." },
+      { property: "og:title", content: "Reports — TBS Meridian Realities" },
+      { property: "og:description", content: "NAV trends and financial statements for TBS Meridian Fund I." },
+      { property: "og:url", content: "/reports" },
+      { name: "twitter:title", content: "Reports — TBS Meridian Realities" },
+      { name: "twitter:description", content: "NAV trends and financial statements for TBS Meridian Fund I." },
+      { name: "robots", content: "noindex, nofollow" },
+    ],
+    links: [{ rel: "canonical", href: "/reports" }],
+  }),
   component: ReportsPage,
   errorComponent: ErrorComponent,
 });

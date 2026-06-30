@@ -15,6 +15,19 @@ const reportsQO = queryOptions({ queryKey: ["reports"], queryFn: () => listRepor
 const auditQO = queryOptions({ queryKey: ["audit", 6], queryFn: () => listAuditEvents({ data: { limit: 6 } }) });
 
 export const Route = createFileRoute("/_authenticated/manager/")({
+  head: () => ({
+    meta: [
+      { title: "Manager overview — TBS Meridian Realities" },
+      { name: "description", content: "Operational overview for TBS Meridian managers." },
+      { property: "og:title", content: "Manager overview — TBS Meridian Realities" },
+      { property: "og:description", content: "Operational overview for TBS Meridian managers." },
+      { property: "og:url", content: "/manager" },
+      { name: "twitter:title", content: "Manager overview — TBS Meridian Realities" },
+      { name: "twitter:description", content: "Operational overview for TBS Meridian managers." },
+      { name: "robots", content: "noindex, nofollow" },
+    ],
+    links: [{ rel: "canonical", href: "/manager" }],
+  }),
   component: () => (
     <ManagerPage eyebrow="MANAGER CONSOLE" title="TBS Meridian Fund I" description="Operational health, capital position, and recent governance.">
       <Content />

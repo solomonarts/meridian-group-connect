@@ -10,6 +10,19 @@ import { closePoll, createPoll, listPolls } from "@/lib/manager.functions";
 const qo = queryOptions({ queryKey: ["mgr", "polls"], queryFn: () => listPolls({ data: {} }) });
 
 export const Route = createFileRoute("/_authenticated/manager/polls")({
+  head: () => ({
+    meta: [
+      { title: "Manage polls — TBS Meridian Realities" },
+      { name: "description", content: "Create and manage TBS Meridian governance polls." },
+      { property: "og:title", content: "Manage polls — TBS Meridian Realities" },
+      { property: "og:description", content: "Create and manage TBS Meridian governance polls." },
+      { property: "og:url", content: "/manager/polls" },
+      { name: "twitter:title", content: "Manage polls — TBS Meridian Realities" },
+      { name: "twitter:description", content: "Create and manage TBS Meridian governance polls." },
+      { name: "robots", content: "noindex, nofollow" },
+    ],
+    links: [{ rel: "canonical", href: "/manager/polls" }],
+  }),
   component: () => (
     <ManagerPage eyebrow="MANAGER" title="Polls" description="Run governance polls. Members vote from their portal.">
       <Content />

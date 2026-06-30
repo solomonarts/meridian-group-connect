@@ -11,6 +11,19 @@ import { createAsset, deleteAsset, updateAsset } from "@/lib/manager.functions";
 const qo = queryOptions({ queryKey: ["portfolio"], queryFn: () => listPortfolio({ data: {} }) });
 
 export const Route = createFileRoute("/_authenticated/manager/portfolio")({
+  head: () => ({
+    meta: [
+      { title: "Manage portfolio — TBS Meridian Realities" },
+      { name: "description", content: "Maintain TBS Meridian portfolio assets and performance data." },
+      { property: "og:title", content: "Manage portfolio — TBS Meridian Realities" },
+      { property: "og:description", content: "Maintain TBS Meridian portfolio assets and performance data." },
+      { property: "og:url", content: "/manager/portfolio" },
+      { name: "twitter:title", content: "Manage portfolio — TBS Meridian Realities" },
+      { name: "twitter:description", content: "Maintain TBS Meridian portfolio assets and performance data." },
+      { name: "robots", content: "noindex, nofollow" },
+    ],
+    links: [{ rel: "canonical", href: "/manager/portfolio" }],
+  }),
   component: () => (
     <ManagerPage eyebrow="MANAGER" title="Portfolio" description="Maintain the fund's asset register and valuations.">
       <Content />

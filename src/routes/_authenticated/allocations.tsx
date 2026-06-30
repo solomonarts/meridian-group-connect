@@ -12,6 +12,19 @@ import { Textarea } from "@/components/ui/textarea";
 import { cancelAllocation, createAllocation, getCapacity, listMyAllocations } from "@/lib/member.functions";
 
 export const Route = createFileRoute("/_authenticated/allocations")({
+  head: () => ({
+    meta: [
+      { title: "Slot allocations — TBS Meridian Realities" },
+      { name: "description", content: "Track your TBS Meridian slot ownership and allocation requests." },
+      { property: "og:title", content: "Slot allocations — TBS Meridian Realities" },
+      { property: "og:description", content: "Track your TBS Meridian slot ownership and allocation requests." },
+      { property: "og:url", content: "/allocations" },
+      { name: "twitter:title", content: "Slot allocations — TBS Meridian Realities" },
+      { name: "twitter:description", content: "Track your TBS Meridian slot ownership and allocation requests." },
+      { name: "robots", content: "noindex, nofollow" },
+    ],
+    links: [{ rel: "canonical", href: "/allocations" }],
+  }),
   component: AllocationsPage,
   errorComponent: ErrorComponent,
 });

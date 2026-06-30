@@ -26,6 +26,19 @@ const reportsQO = queryOptions({ queryKey: ["reports"], queryFn: () => listRepor
 const auditQO = queryOptions({ queryKey: ["audit", 8], queryFn: () => listAuditEvents({ data: { limit: 8 } }) });
 
 export const Route = createFileRoute("/_authenticated/portal")({
+  head: () => ({
+    meta: [
+      { title: "Member dashboard — TBS Meridian Realities" },
+      { name: "description", content: "Your TBS Meridian fund overview, NAV, allocations, and governance feed." },
+      { property: "og:title", content: "Member dashboard — TBS Meridian Realities" },
+      { property: "og:description", content: "Your TBS Meridian fund overview, NAV, allocations, and governance feed." },
+      { property: "og:url", content: "/portal" },
+      { name: "twitter:title", content: "Member dashboard — TBS Meridian Realities" },
+      { name: "twitter:description", content: "Your TBS Meridian fund overview, NAV, allocations, and governance feed." },
+      { name: "robots", content: "noindex, nofollow" },
+    ],
+    links: [{ rel: "canonical", href: "/portal" }],
+  }),
   component: PortalPage,
   errorComponent: ({ error }) => (
     <div className="p-12 text-sm text-destructive">Portal failed to load: {error.message}</div>

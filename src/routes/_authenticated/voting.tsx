@@ -9,6 +9,19 @@ import { Button } from "@/components/ui/button";
 import { castPollVote, listMemberPolls } from "@/lib/member.functions";
 
 export const Route = createFileRoute("/_authenticated/voting")({
+  head: () => ({
+    meta: [
+      { title: "Governance voting — TBS Meridian Realities" },
+      { name: "description", content: "Cast weighted votes on TBS Meridian governance polls." },
+      { property: "og:title", content: "Governance voting — TBS Meridian Realities" },
+      { property: "og:description", content: "Cast weighted votes on TBS Meridian governance polls." },
+      { property: "og:url", content: "/voting" },
+      { name: "twitter:title", content: "Governance voting — TBS Meridian Realities" },
+      { name: "twitter:description", content: "Cast weighted votes on TBS Meridian governance polls." },
+      { name: "robots", content: "noindex, nofollow" },
+    ],
+    links: [{ rel: "canonical", href: "/voting" }],
+  }),
   component: VotingPage,
   errorComponent: ErrorComponent,
 });

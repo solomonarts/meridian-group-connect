@@ -10,6 +10,19 @@ import { getGroupSettings, updateGroupSettings } from "@/lib/manager.functions";
 const qo = queryOptions({ queryKey: ["mgr", "settings"], queryFn: () => getGroupSettings({ data: {} }) });
 
 export const Route = createFileRoute("/_authenticated/manager/settings")({
+  head: () => ({
+    meta: [
+      { title: "Manager settings — TBS Meridian Realities" },
+      { name: "description", content: "Configure TBS Meridian group settings and subscription terms." },
+      { property: "og:title", content: "Manager settings — TBS Meridian Realities" },
+      { property: "og:description", content: "Configure TBS Meridian group settings and subscription terms." },
+      { property: "og:url", content: "/manager/settings" },
+      { name: "twitter:title", content: "Manager settings — TBS Meridian Realities" },
+      { name: "twitter:description", content: "Configure TBS Meridian group settings and subscription terms." },
+      { name: "robots", content: "noindex, nofollow" },
+    ],
+    links: [{ rel: "canonical", href: "/manager/settings" }],
+  }),
   component: () => (
     <ManagerPage eyebrow="MANAGER" title="Group settings" description="Edit fund metadata, slot capacity, and subscription terms.">
       <Content />

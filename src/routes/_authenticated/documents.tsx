@@ -9,6 +9,19 @@ import { Button } from "@/components/ui/button";
 import { getDocumentSignedUrl, listMemberDocuments, signDocument } from "@/lib/member.functions";
 
 export const Route = createFileRoute("/_authenticated/documents")({
+  head: () => ({
+    meta: [
+      { title: "Document vault — TBS Meridian Realities" },
+      { name: "description", content: "Secure access to TBS Meridian agreements, memos, and statements." },
+      { property: "og:title", content: "Document vault — TBS Meridian Realities" },
+      { property: "og:description", content: "Secure access to TBS Meridian agreements, memos, and statements." },
+      { property: "og:url", content: "/documents" },
+      { name: "twitter:title", content: "Document vault — TBS Meridian Realities" },
+      { name: "twitter:description", content: "Secure access to TBS Meridian agreements, memos, and statements." },
+      { name: "robots", content: "noindex, nofollow" },
+    ],
+    links: [{ rel: "canonical", href: "/documents" }],
+  }),
   component: DocumentsPage,
   errorComponent: ErrorComponent,
 });

@@ -9,6 +9,19 @@ import { Button } from "@/components/ui/button";
 import { castDealVote, listMemberDeals } from "@/lib/member.functions";
 
 export const Route = createFileRoute("/_authenticated/deals")({
+  head: () => ({
+    meta: [
+      { title: "Deal room — TBS Meridian Realities" },
+      { name: "description", content: "Live partner-backed opportunities open to TBS Meridian members for review and voting." },
+      { property: "og:title", content: "Deal room — TBS Meridian Realities" },
+      { property: "og:description", content: "Live partner-backed opportunities open to TBS Meridian members for review and voting." },
+      { property: "og:url", content: "/deals" },
+      { name: "twitter:title", content: "Deal room — TBS Meridian Realities" },
+      { name: "twitter:description", content: "Live partner-backed opportunities open to TBS Meridian members for review and voting." },
+      { name: "robots", content: "noindex, nofollow" },
+    ],
+    links: [{ rel: "canonical", href: "/deals" }],
+  }),
   component: DealsPage,
   errorComponent: ErrorComponent,
 });

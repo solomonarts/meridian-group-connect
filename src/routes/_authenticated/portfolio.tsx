@@ -7,6 +7,19 @@ import { Panel, StatusPill } from "@/components/dashboard-ui";
 import { listPortfolio } from "@/lib/tbs.functions";
 
 export const Route = createFileRoute("/_authenticated/portfolio")({
+  head: () => ({
+    meta: [
+      { title: "Portfolio — TBS Meridian Realities" },
+      { name: "description", content: "Detailed view of TBS Meridian assets you have exposure to." },
+      { property: "og:title", content: "Portfolio — TBS Meridian Realities" },
+      { property: "og:description", content: "Detailed view of TBS Meridian assets you have exposure to." },
+      { property: "og:url", content: "/portfolio" },
+      { name: "twitter:title", content: "Portfolio — TBS Meridian Realities" },
+      { name: "twitter:description", content: "Detailed view of TBS Meridian assets you have exposure to." },
+      { name: "robots", content: "noindex, nofollow" },
+    ],
+    links: [{ rel: "canonical", href: "/portfolio" }],
+  }),
   component: PortfolioPage,
   errorComponent: ErrorComponent,
 });
