@@ -10,6 +10,19 @@ import { appointLeader, listLeadership, removeLeader } from "@/lib/manager.funct
 const qo = queryOptions({ queryKey: ["mgr", "leadership"], queryFn: () => listLeadership({ data: {} }) });
 
 export const Route = createFileRoute("/_authenticated/manager/leadership")({
+  head: () => ({
+    meta: [
+      { title: "Leadership positions — TBS Meridian Realities" },
+      { name: "description", content: "Configure TBS Meridian leadership roles and approvers." },
+      { property: "og:title", content: "Leadership positions — TBS Meridian Realities" },
+      { property: "og:description", content: "Configure TBS Meridian leadership roles and approvers." },
+      { property: "og:url", content: "/manager/leadership" },
+      { name: "twitter:title", content: "Leadership positions — TBS Meridian Realities" },
+      { name: "twitter:description", content: "Configure TBS Meridian leadership roles and approvers." },
+      { name: "robots", content: "noindex, nofollow" },
+    ],
+    links: [{ rel: "canonical", href: "/manager/leadership" }],
+  }),
   component: () => (
     <ManagerPage eyebrow="MANAGER" title="Leadership" description="Appoint leaders. Three leader approvals auto-approve slot allocations.">
       <Content />

@@ -10,6 +10,19 @@ import { createPayment, listPayments, updatePaymentStatus } from "@/lib/manager.
 const qo = queryOptions({ queryKey: ["mgr", "payments"], queryFn: () => listPayments({ data: {} }) });
 
 export const Route = createFileRoute("/_authenticated/manager/payments")({
+  head: () => ({
+    meta: [
+      { title: "Manage payments — TBS Meridian Realities" },
+      { name: "description", content: "Reconcile contributions and distributions for TBS Meridian." },
+      { property: "og:title", content: "Manage payments — TBS Meridian Realities" },
+      { property: "og:description", content: "Reconcile contributions and distributions for TBS Meridian." },
+      { property: "og:url", content: "/manager/payments" },
+      { name: "twitter:title", content: "Manage payments — TBS Meridian Realities" },
+      { name: "twitter:description", content: "Reconcile contributions and distributions for TBS Meridian." },
+      { name: "robots", content: "noindex, nofollow" },
+    ],
+    links: [{ rel: "canonical", href: "/manager/payments" }],
+  }),
   component: () => (
     <ManagerPage eyebrow="MANAGER" title="Payments" description="Create payment requests and verify member-submitted proofs.">
       <Content />

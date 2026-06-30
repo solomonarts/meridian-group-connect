@@ -11,6 +11,19 @@ import { supabase } from "@/integrations/supabase/client";
 import { listMyPayments, recordPaymentProof } from "@/lib/member.functions";
 
 export const Route = createFileRoute("/_authenticated/payments")({
+  head: () => ({
+    meta: [
+      { title: "Payments — TBS Meridian Realities" },
+      { name: "description", content: "Track contributions, distributions, and upload proof of transfer." },
+      { property: "og:title", content: "Payments — TBS Meridian Realities" },
+      { property: "og:description", content: "Track contributions, distributions, and upload proof of transfer." },
+      { property: "og:url", content: "/payments" },
+      { name: "twitter:title", content: "Payments — TBS Meridian Realities" },
+      { name: "twitter:description", content: "Track contributions, distributions, and upload proof of transfer." },
+      { name: "robots", content: "noindex, nofollow" },
+    ],
+    links: [{ rel: "canonical", href: "/payments" }],
+  }),
   component: PaymentsPage,
   errorComponent: ErrorComponent,
 });

@@ -10,6 +10,19 @@ import { createDeal, listDeals, updateDealStatus } from "@/lib/manager.functions
 const qo = queryOptions({ queryKey: ["mgr", "deals"], queryFn: () => listDeals({ data: {} }) });
 
 export const Route = createFileRoute("/_authenticated/manager/deals")({
+  head: () => ({
+    meta: [
+      { title: "Manage deals — TBS Meridian Realities" },
+      { name: "description", content: "Create, publish, and manage TBS Meridian investment deals." },
+      { property: "og:title", content: "Manage deals — TBS Meridian Realities" },
+      { property: "og:description", content: "Create, publish, and manage TBS Meridian investment deals." },
+      { property: "og:url", content: "/manager/deals" },
+      { name: "twitter:title", content: "Manage deals — TBS Meridian Realities" },
+      { name: "twitter:description", content: "Create, publish, and manage TBS Meridian investment deals." },
+      { name: "robots", content: "noindex, nofollow" },
+    ],
+    links: [{ rel: "canonical", href: "/manager/deals" }],
+  }),
   component: () => (
     <ManagerPage eyebrow="MANAGER" title="Deals" description="Create investment deals and publish them for member voting.">
       <Content />

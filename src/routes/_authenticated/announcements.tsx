@@ -8,6 +8,19 @@ import { Button } from "@/components/ui/button";
 import { listMemberAnnouncements, markAnnouncementRead } from "@/lib/member.functions";
 
 export const Route = createFileRoute("/_authenticated/announcements")({
+  head: () => ({
+    meta: [
+      { title: "Announcements — TBS Meridian Realities" },
+      { name: "description", content: "Manager broadcasts and TBS Meridian group notices." },
+      { property: "og:title", content: "Announcements — TBS Meridian Realities" },
+      { property: "og:description", content: "Manager broadcasts and TBS Meridian group notices." },
+      { property: "og:url", content: "/announcements" },
+      { name: "twitter:title", content: "Announcements — TBS Meridian Realities" },
+      { name: "twitter:description", content: "Manager broadcasts and TBS Meridian group notices." },
+      { name: "robots", content: "noindex, nofollow" },
+    ],
+    links: [{ rel: "canonical", href: "/announcements" }],
+  }),
   component: AnnouncementsPage,
   errorComponent: ErrorComponent,
 });

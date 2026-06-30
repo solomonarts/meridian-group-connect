@@ -10,6 +10,19 @@ import { createAnnouncement, deleteAnnouncement, listAnnouncements } from "@/lib
 const qo = queryOptions({ queryKey: ["mgr", "announcements"], queryFn: () => listAnnouncements({ data: {} }) });
 
 export const Route = createFileRoute("/_authenticated/manager/announcements")({
+  head: () => ({
+    meta: [
+      { title: "Manage announcements — TBS Meridian Realities" },
+      { name: "description", content: "Broadcast updates and track read receipts for TBS Meridian members." },
+      { property: "og:title", content: "Manage announcements — TBS Meridian Realities" },
+      { property: "og:description", content: "Broadcast updates and track read receipts for TBS Meridian members." },
+      { property: "og:url", content: "/manager/announcements" },
+      { name: "twitter:title", content: "Manage announcements — TBS Meridian Realities" },
+      { name: "twitter:description", content: "Broadcast updates and track read receipts for TBS Meridian members." },
+      { name: "robots", content: "noindex, nofollow" },
+    ],
+    links: [{ rel: "canonical", href: "/manager/announcements" }],
+  }),
   component: () => (
     <ManagerPage eyebrow="MANAGER" title="Announcements" description="Broadcast updates and track read receipts.">
       <Content />

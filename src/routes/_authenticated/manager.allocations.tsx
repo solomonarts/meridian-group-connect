@@ -9,6 +9,19 @@ import { decideAllocation, listAllocations } from "@/lib/manager.functions";
 const qo = queryOptions({ queryKey: ["mgr", "allocations"], queryFn: () => listAllocations({ data: {} }) });
 
 export const Route = createFileRoute("/_authenticated/manager/allocations")({
+  head: () => ({
+    meta: [
+      { title: "Manage allocations — TBS Meridian Realities" },
+      { name: "description", content: "Approve, commit, or cancel TBS Meridian slot allocations." },
+      { property: "og:title", content: "Manage allocations — TBS Meridian Realities" },
+      { property: "og:description", content: "Approve, commit, or cancel TBS Meridian slot allocations." },
+      { property: "og:url", content: "/manager/allocations" },
+      { name: "twitter:title", content: "Manage allocations — TBS Meridian Realities" },
+      { name: "twitter:description", content: "Approve, commit, or cancel TBS Meridian slot allocations." },
+      { name: "robots", content: "noindex, nofollow" },
+    ],
+    links: [{ rel: "canonical", href: "/manager/allocations" }],
+  }),
   component: () => (
     <ManagerPage eyebrow="MANAGER" title="Slot allocations" description="Auto-approves when three leaders approve. Finalize commit or cancel.">
       <Content />

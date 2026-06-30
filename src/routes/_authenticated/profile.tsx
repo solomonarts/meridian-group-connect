@@ -13,6 +13,19 @@ import { getMyProfile } from "@/lib/tbs.functions";
 import { updateMyProfile } from "@/lib/member.functions";
 
 export const Route = createFileRoute("/_authenticated/profile")({
+  head: () => ({
+    meta: [
+      { title: "Profile & KYC — TBS Meridian Realities" },
+      { name: "description", content: "Manage your TBS Meridian identity and KYC information." },
+      { property: "og:title", content: "Profile & KYC — TBS Meridian Realities" },
+      { property: "og:description", content: "Manage your TBS Meridian identity and KYC information." },
+      { property: "og:url", content: "/profile" },
+      { name: "twitter:title", content: "Profile & KYC — TBS Meridian Realities" },
+      { name: "twitter:description", content: "Manage your TBS Meridian identity and KYC information." },
+      { name: "robots", content: "noindex, nofollow" },
+    ],
+    links: [{ rel: "canonical", href: "/profile" }],
+  }),
   component: ProfilePage,
   errorComponent: ErrorComponent,
 });

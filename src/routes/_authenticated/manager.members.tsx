@@ -10,6 +10,19 @@ import { addMemberByEmail, listMembers, removeMember } from "@/lib/manager.funct
 const qo = queryOptions({ queryKey: ["mgr", "members"], queryFn: () => listMembers({ data: {} }) });
 
 export const Route = createFileRoute("/_authenticated/manager/members")({
+  head: () => ({
+    meta: [
+      { title: "Members directory — TBS Meridian Realities" },
+      { name: "description", content: "Manage TBS Meridian members and roles." },
+      { property: "og:title", content: "Members directory — TBS Meridian Realities" },
+      { property: "og:description", content: "Manage TBS Meridian members and roles." },
+      { property: "og:url", content: "/manager/members" },
+      { name: "twitter:title", content: "Members directory — TBS Meridian Realities" },
+      { name: "twitter:description", content: "Manage TBS Meridian members and roles." },
+      { name: "robots", content: "noindex, nofollow" },
+    ],
+    links: [{ rel: "canonical", href: "/manager/members" }],
+  }),
   component: () => (
     <ManagerPage eyebrow="MANAGER" title="Members" description="Add or remove members and managers of TBS Meridian Fund I.">
       <Content />

@@ -10,6 +10,19 @@ import { Panel, StatusPill } from "@/components/dashboard-ui";
 const qo = queryOptions({ queryKey: ["applications"], queryFn: () => listApplications() });
 
 export const Route = createFileRoute("/_authenticated/manager/applications")({
+  head: () => ({
+    meta: [
+      { title: "Membership applications — TBS Meridian Realities" },
+      { name: "description", content: "Review and decide on TBS Meridian membership applications." },
+      { property: "og:title", content: "Membership applications — TBS Meridian Realities" },
+      { property: "og:description", content: "Review and decide on TBS Meridian membership applications." },
+      { property: "og:url", content: "/manager/applications" },
+      { name: "twitter:title", content: "Membership applications — TBS Meridian Realities" },
+      { name: "twitter:description", content: "Review and decide on TBS Meridian membership applications." },
+      { name: "robots", content: "noindex, nofollow" },
+    ],
+    links: [{ rel: "canonical", href: "/manager/applications" }],
+  }),
   component: () => (
     <ManagerPage eyebrow="MANAGER" title="Applications" description="Approve, review, and KYC prospective members.">
       <Content />
