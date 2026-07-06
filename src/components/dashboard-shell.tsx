@@ -1,9 +1,11 @@
 import { Link, useNavigate, useRouter, useRouterState } from "@tanstack/react-router";
-import { useQueryClient } from "@tanstack/react-query";
-import { useState, type ReactNode } from "react";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useEffect, useState, type ReactNode } from "react";
+import { useServerFn } from "@tanstack/react-start";
 import { Menu, X } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { Sheet, SheetContent, SheetTitle } from "@/components/ui/sheet";
+import { getMyOnboardingStatus } from "@/lib/member.functions";
 import tbsLogo from "@/assets/tbs-logo.jpeg.asset.json";
 
 type NavItem = { label: string; to: string };
@@ -117,6 +119,15 @@ export function DashboardShell({ children, email }: { children: ReactNode; email
   const qc = useQueryClient();
   const pathname = useRouterState({ select: (s) => s.location.pathname });
   const [mobileOpen, setMobileOpen] = useState(false);
+
+  const statusFn = useServerFn(getMyOnboardingStatus);
+  const { data: me } = useQuery({ queryKey: ["onboarding-status"], queryFn: () => statusFn(), staleTime: 30_000 });
+  useEffect(() => {
+    if (me?.must_change_password && pathname !== "/onboarding") {
+      navigate({ to: "/onboarding", replace: true });
+    }
+  }, [me, pathname, navigate]);
+
 
   async function signOut() {
     await qc.cancelQueries();

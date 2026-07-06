@@ -61,31 +61,68 @@ export const listMembers = createServerFn({ method: "GET" })
     return (roles ?? []).map((r) => ({ ...r, profile: map.get(r.user_id) ?? null }));
   });
 
-export const addMemberByEmail = createServerFn({ method: "POST" })
+function generateTempPassword() {
+  // 12 chars, mixed-case alnum + symbol
+  const alpha = "ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnpqrstuvwxyz";
+  const nums = "23456789";
+  const sym = "!@#$%^&*";
+  const pool = alpha + nums + sym;
+  const bytes = new Uint8Array(12);
+  crypto.getRandomValues(bytes);
+  let out = "";
+  for (const b of bytes) out += pool[b % pool.length];
+  // ensure at least one of each
+  return out.slice(0, 9) + alpha[bytes[9] % alpha.length] + nums[bytes[10] % nums.length] + sym[bytes[11] % sym.length];
+}
+
+export const createMember = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator((input: unknown) =>
-    z.object({ email: z.string().email(), groupId: z.string().uuid().default(DEFAULT_GROUP_ID), role: z.enum(["member", "manager"]).default("member") }).parse(input),
+    z.object({
+      email: z.string().email(),
+      full_name: z.string().trim().min(2).max(120),
+      role: z.enum(["member", "manager"]).default("member"),
+      groupId: z.string().uuid().default(DEFAULT_GROUP_ID),
+    }).parse(input),
   )
   .handler(async ({ data, context }) => {
     await assertManager(context.supabase, context.userId, data.groupId);
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
-    const { data: list, error: listErr } = await supabaseAdmin.auth.admin.listUsers({ perPage: 200 });
+    const email = data.email.toLowerCase();
+
+    // Reject if account already exists
+    const { data: list, error: listErr } = await supabaseAdmin.auth.admin.listUsers({ perPage: 1000 });
     if (listErr) throw new Error(listErr.message);
-    const user = list.users.find((u) => (u.email ?? "").toLowerCase() === data.email.toLowerCase());
-    if (!user) throw new Error("No account with that email — ask them to sign up first.");
-    const { error } = await supabaseAdmin
+    const existing = list.users.find((u) => (u.email ?? "").toLowerCase() === email);
+    if (existing) throw new Error("An account with that email already exists.");
+
+    const tempPassword = generateTempPassword();
+    const { data: created, error: createErr } = await supabaseAdmin.auth.admin.createUser({
+      email,
+      password: tempPassword,
+      email_confirm: true,
+      user_metadata: { full_name: data.full_name },
+    });
+    if (createErr || !created.user) throw new Error(createErr?.message ?? "Failed to create account");
+
+    const uid = created.user.id;
+    // Trigger handle_new_user inserts profile + applicant role. Force flag + name.
+    await supabaseAdmin.from("profiles").upsert({ id: uid, email, full_name: data.full_name, must_change_password: true });
+    const { error: roleErr } = await supabaseAdmin
       .from("user_roles")
-      .insert({ user_id: user.id, role: data.role, group_id: data.groupId });
-    if (error && !error.message.includes("duplicate")) throw new Error(error.message);
+      .insert({ user_id: uid, role: data.role, group_id: data.groupId });
+    if (roleErr && !roleErr.message.includes("duplicate")) throw new Error(roleErr.message);
+
     await supabaseAdmin.from("audit_events").insert({
       event_type: "membership",
       group_id: data.groupId,
       actor_id: context.userId,
-      title: `Added ${data.role}`,
-      description: `${data.email} added as ${data.role}.`,
+      title: `Created ${data.role} account`,
+      description: `${data.full_name} <${email}> onboarded as ${data.role}.`,
     });
-    return { ok: true };
+    return { ok: true, email, tempPassword };
   });
+
 
 export const removeMember = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])

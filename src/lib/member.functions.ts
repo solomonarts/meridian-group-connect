@@ -276,15 +276,76 @@ export const updateMyProfile = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator((input: unknown) =>
     z.object({
-      full_name: z.string().optional(),
-      country: z.string().optional(),
+      full_name: z.string().trim().min(1).max(120).optional(),
+      country: z.string().trim().max(80).optional(),
+      phone: z.string().trim().max(40).optional(),
+      bio: z.string().trim().max(2000).optional(),
+      avatar_url: z.string().trim().max(500).optional(),
+    }).parse(input),
+  )
+  .handler(async ({ data, context }) => {
+    const patch: {
+      full_name?: string;
+      country?: string;
+      phone?: string;
+      bio?: string;
+      avatar_url?: string;
+    } = {};
+    if (data.full_name !== undefined) patch.full_name = data.full_name;
+    if (data.country !== undefined) patch.country = data.country;
+    if (data.phone !== undefined) patch.phone = data.phone;
+    if (data.bio !== undefined) patch.bio = data.bio;
+    if (data.avatar_url !== undefined) patch.avatar_url = data.avatar_url;
+    const { error } = await context.supabase.from("profiles").update(patch).eq("id", context.userId);
+    if (error) throw new Error(error.message);
+    return { ok: true };
+  });
+
+export const getMyOnboardingStatus = createServerFn({ method: "GET" })
+  .middleware([requireSupabaseAuth])
+  .handler(async ({ context }) => {
+    const { data } = await context.supabase
+      .from("profiles")
+      .select("must_change_password, full_name, avatar_url, phone, bio, country, email, onboarded_at")
+      .eq("id", context.userId)
+      .maybeSingle();
+    return {
+      must_change_password: data?.must_change_password ?? false,
+      full_name: data?.full_name ?? null,
+      email: data?.email ?? null,
+      country: data?.country ?? null,
+      phone: data?.phone ?? null,
+      bio: data?.bio ?? null,
+      avatar_url: data?.avatar_url ?? null,
+      onboarded_at: data?.onboarded_at ?? null,
+    };
+  });
+
+export const completeOnboarding = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((input: unknown) =>
+    z.object({
+      full_name: z.string().trim().min(2).max(120),
+      country: z.string().trim().max(80).optional(),
+      phone: z.string().trim().max(40).optional(),
+      bio: z.string().trim().max(2000).optional(),
+      avatar_url: z.string().trim().max(500).optional(),
     }).parse(input),
   )
   .handler(async ({ data, context }) => {
     const { error } = await context.supabase
       .from("profiles")
-      .update({ full_name: data.full_name, country: data.country })
+      .update({
+        full_name: data.full_name,
+        country: data.country,
+        phone: data.phone,
+        bio: data.bio,
+        avatar_url: data.avatar_url,
+        must_change_password: false,
+        onboarded_at: new Date().toISOString(),
+      })
       .eq("id", context.userId);
     if (error) throw new Error(error.message);
     return { ok: true };
   });
+
