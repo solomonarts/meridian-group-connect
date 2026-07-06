@@ -276,15 +276,59 @@ export const updateMyProfile = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator((input: unknown) =>
     z.object({
-      full_name: z.string().optional(),
-      country: z.string().optional(),
+      full_name: z.string().trim().min(1).max(120).optional(),
+      country: z.string().trim().max(80).optional(),
+      phone: z.string().trim().max(40).optional(),
+      bio: z.string().trim().max(2000).optional(),
+      avatar_url: z.string().trim().max(500).optional(),
+    }).parse(input),
+  )
+  .handler(async ({ data, context }) => {
+    const patch: Record<string, unknown> = {};
+    for (const k of ["full_name", "country", "phone", "bio", "avatar_url"] as const) {
+      if (data[k] !== undefined) patch[k] = data[k];
+    }
+    const { error } = await context.supabase.from("profiles").update(patch).eq("id", context.userId);
+    if (error) throw new Error(error.message);
+    return { ok: true };
+  });
+
+export const getMyOnboardingStatus = createServerFn({ method: "GET" })
+  .middleware([requireSupabaseAuth])
+  .handler(async ({ context }) => {
+    const { data } = await context.supabase
+      .from("profiles")
+      .select("must_change_password, full_name, avatar_url, phone, bio, country, email, onboarded_at")
+      .eq("id", context.userId)
+      .maybeSingle();
+    return data ?? { must_change_password: false };
+  });
+
+export const completeOnboarding = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((input: unknown) =>
+    z.object({
+      full_name: z.string().trim().min(2).max(120),
+      country: z.string().trim().max(80).optional(),
+      phone: z.string().trim().max(40).optional(),
+      bio: z.string().trim().max(2000).optional(),
+      avatar_url: z.string().trim().max(500).optional(),
     }).parse(input),
   )
   .handler(async ({ data, context }) => {
     const { error } = await context.supabase
       .from("profiles")
-      .update({ full_name: data.full_name, country: data.country })
+      .update({
+        full_name: data.full_name,
+        country: data.country,
+        phone: data.phone,
+        bio: data.bio,
+        avatar_url: data.avatar_url,
+        must_change_password: false,
+        onboarded_at: new Date().toISOString(),
+      })
       .eq("id", context.userId);
     if (error) throw new Error(error.message);
     return { ok: true };
   });
+
