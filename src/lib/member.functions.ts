@@ -284,10 +284,18 @@ export const updateMyProfile = createServerFn({ method: "POST" })
     }).parse(input),
   )
   .handler(async ({ data, context }) => {
-    const patch: Record<string, unknown> = {};
-    for (const k of ["full_name", "country", "phone", "bio", "avatar_url"] as const) {
-      if (data[k] !== undefined) patch[k] = data[k];
-    }
+    const patch: {
+      full_name?: string;
+      country?: string;
+      phone?: string;
+      bio?: string;
+      avatar_url?: string;
+    } = {};
+    if (data.full_name !== undefined) patch.full_name = data.full_name;
+    if (data.country !== undefined) patch.country = data.country;
+    if (data.phone !== undefined) patch.phone = data.phone;
+    if (data.bio !== undefined) patch.bio = data.bio;
+    if (data.avatar_url !== undefined) patch.avatar_url = data.avatar_url;
     const { error } = await context.supabase.from("profiles").update(patch).eq("id", context.userId);
     if (error) throw new Error(error.message);
     return { ok: true };
