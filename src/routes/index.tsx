@@ -628,16 +628,25 @@ function Membership() {
           Founding membership is slot-based and governance-led.
         </h2>
         <p className="mt-5 max-w-2xl text-sm leading-relaxed text-navy-muted">
-          Members receive economic rights, voting rights, document access, and reporting according to the association
-          structure.
+          Membership is by invitation only. Group managers create accounts for approved
+          founding members and issue a one-time password. Members complete their profile
+          and set a new password on first sign-in.
         </p>
-        <a
-          href="#apply"
-          className="mt-8 inline-block rounded-md px-6 py-3 text-sm font-semibold text-navy-ink transition-transform hover:-translate-y-px"
-          style={{ background: "var(--gradient-gold)", boxShadow: "var(--shadow-glow)" }}
-        >
-          Apply for a founding slot →
-        </a>
+        <div className="mt-8 flex flex-wrap gap-3">
+          <Link
+            to="/auth"
+            className="inline-block rounded-md px-6 py-3 text-sm font-semibold text-navy-ink transition-transform hover:-translate-y-px"
+            style={{ background: "var(--gradient-gold)", boxShadow: "var(--shadow-glow)" }}
+          >
+            Member sign in →
+          </Link>
+          <a
+            href="mailto:membership@tbsmeridian.com"
+            className="rounded-md border border-white/20 bg-white/[0.04] px-6 py-3 text-sm font-semibold text-navy-foreground backdrop-blur transition-colors hover:border-gold hover:text-gold"
+          >
+            Request an invitation
+          </a>
+        </div>
         <div className="mt-12 grid gap-5 md:grid-cols-3">
           {memberRights.map(([t, d]) => (
             <div key={t} className="rounded-xl border border-white/[0.08] bg-white/[0.04] p-6 backdrop-blur-sm">
@@ -646,8 +655,6 @@ function Membership() {
             </div>
           ))}
         </div>
-
-        <ApplyForm />
       </div>
     </section>
   );
