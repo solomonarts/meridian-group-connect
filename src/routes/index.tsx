@@ -120,13 +120,13 @@ function Header() {
               Sign in
             </Link>
           )}
-          <a
-            href="#apply"
+          <Link
+            to="/auth"
             className="rounded-md px-4 py-2 text-sm font-semibold text-navy-ink transition-transform hover:-translate-y-px"
             style={{ background: "var(--gradient-gold)", boxShadow: "var(--shadow-glow)" }}
           >
-            Apply
-          </a>
+            Member sign in
+          </Link>
 
           <button
             type="button"
