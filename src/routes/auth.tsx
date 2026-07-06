@@ -16,10 +16,8 @@ export const Route = createFileRoute("/auth")({
 
 function AuthPage() {
   const navigate = useNavigate();
-  const [mode, setMode] = useState<"signin" | "signup">("signin");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [name, setName] = useState("");
   const [busy, setBusy] = useState(false);
 
   useEffect(() => {
@@ -32,24 +30,10 @@ function AuthPage() {
     e.preventDefault();
     setBusy(true);
     try {
-      if (mode === "signin") {
-        const { error } = await supabase.auth.signInWithPassword({ email, password });
-        if (error) throw error;
-        toast.success("Welcome back");
-        navigate({ to: "/portal" });
-      } else {
-        const { error } = await supabase.auth.signUp({
-          email,
-          password,
-          options: {
-            emailRedirectTo: `${window.location.origin}/portal`,
-            data: { full_name: name },
-          },
-        });
-        if (error) throw error;
-        toast.success("Account created. Check your email if confirmation is required.");
-        navigate({ to: "/portal" });
-      }
+      const { error } = await supabase.auth.signInWithPassword({ email, password });
+      if (error) throw error;
+      toast.success("Welcome back");
+      navigate({ to: "/portal" });
     } catch (err) {
       toast.error(err instanceof Error ? err.message : "Something went wrong");
     } finally {
@@ -80,9 +64,9 @@ function AuthPage() {
         <Link to="/" className="text-[10px] font-semibold uppercase tracking-[0.25em] text-gold">
           ← TBS Meridian
         </Link>
-        <h1 className="mt-4 text-2xl font-bold">{mode === "signin" ? "Member sign in" : "Create your account"}</h1>
+        <h1 className="mt-4 text-2xl font-bold">Member sign in</h1>
         <p className="mt-1 text-sm text-navy-muted">
-          {mode === "signin" ? "Access the portal and applications." : "Apply for membership and review status."}
+          Membership is by invitation. Use the credentials issued by your group manager.
         </p>
 
         <button
@@ -99,16 +83,6 @@ function AuthPage() {
         </div>
 
         <form onSubmit={onSubmit} className="grid gap-3">
-          {mode === "signup" && (
-            <input
-              type="text"
-              required
-              placeholder="Full name"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              className="rounded-md border border-white/15 bg-white/[0.04] px-4 py-3 text-sm placeholder:text-navy-muted focus:border-gold focus:outline-none"
-            />
-          )}
           <input
             type="email"
             required
@@ -121,7 +95,7 @@ function AuthPage() {
             type="password"
             required
             minLength={8}
-            placeholder="Password (min 8 characters)"
+            placeholder="Password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             className="rounded-md border border-white/15 bg-white/[0.04] px-4 py-3 text-sm placeholder:text-navy-muted focus:border-gold focus:outline-none"
@@ -132,17 +106,16 @@ function AuthPage() {
             className="rounded-md px-6 py-3 text-sm font-semibold text-navy-ink transition-transform hover:-translate-y-px disabled:opacity-50"
             style={{ background: "var(--gradient-gold)", boxShadow: "var(--shadow-glow)" }}
           >
-            {busy ? "Please wait…" : mode === "signin" ? "Sign in" : "Create account"}
+            {busy ? "Please wait…" : "Sign in"}
           </button>
         </form>
 
-        <button
-          type="button"
-          onClick={() => setMode((m) => (m === "signin" ? "signup" : "signin"))}
-          className="mt-5 w-full text-center text-xs text-navy-muted hover:text-gold"
-        >
-          {mode === "signin" ? "Need an account? Sign up" : "Already a member? Sign in"}
-        </button>
+        <p className="mt-5 text-center text-xs text-navy-muted">
+          Not a member yet?{" "}
+          <a href="mailto:membership@tbsmeridian.com" className="text-gold hover:underline">
+            Request an invitation
+          </a>
+        </p>
       </div>
     </div>
   );
