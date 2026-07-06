@@ -2,7 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useState, type ReactNode } from "react";
 import tbsLogo from "@/assets/tbs-logo.jpeg.asset.json";
 import { supabase } from "@/integrations/supabase/client";
-import { ApplyForm } from "@/components/apply-form";
+
 import { AuditDrawer } from "@/components/audit-drawer";
 import { LivePortfolio } from "@/components/live-portfolio";
 import { ReportsCharts } from "@/components/reports-charts";
