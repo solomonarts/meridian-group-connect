@@ -121,7 +121,13 @@ export function DashboardShell({ children, email }: { children: ReactNode; email
   const [mobileOpen, setMobileOpen] = useState(false);
 
   const statusFn = useServerFn(getMyOnboardingStatus);
-  const { data: me } = useQuery({ queryKey: ["onboarding-status"], queryFn: () => statusFn(), staleTime: 30_000 });
+  const { data: me } = useQuery({
+    queryKey: ["onboarding-status"],
+    queryFn: () => statusFn(),
+    staleTime: 30_000,
+    enabled: !!email,
+    retry: false,
+  });
   useEffect(() => {
     if (me?.must_change_password && pathname !== "/onboarding") {
       navigate({ to: "/onboarding", replace: true });
