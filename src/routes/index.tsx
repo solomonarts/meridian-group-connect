@@ -198,7 +198,7 @@ function Hero() {
               className="rounded-md px-6 py-3 text-sm font-semibold text-navy-ink transition-transform hover:-translate-y-px"
               style={{ background: "var(--gradient-gold)", boxShadow: "var(--shadow-glow)" }}
             >
-              Apply for Membership →
+              Membership details →
             </a>
             <a
               href="#model"
