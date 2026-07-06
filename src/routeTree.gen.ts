@@ -19,6 +19,7 @@ import { Route as AuthenticatedProfileRouteImport } from './routes/_authenticate
 import { Route as AuthenticatedPortfolioRouteImport } from './routes/_authenticated/portfolio'
 import { Route as AuthenticatedPortalRouteImport } from './routes/_authenticated/portal'
 import { Route as AuthenticatedPaymentsRouteImport } from './routes/_authenticated/payments'
+import { Route as AuthenticatedOnboardingRouteImport } from './routes/_authenticated/onboarding'
 import { Route as AuthenticatedDocumentsRouteImport } from './routes/_authenticated/documents'
 import { Route as AuthenticatedDealsRouteImport } from './routes/_authenticated/deals'
 import { Route as AuthenticatedAnnouncementsRouteImport } from './routes/_authenticated/announcements'
@@ -83,6 +84,11 @@ const AuthenticatedPortalRoute = AuthenticatedPortalRouteImport.update({
 const AuthenticatedPaymentsRoute = AuthenticatedPaymentsRouteImport.update({
   id: '/payments',
   path: '/payments',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedOnboardingRoute = AuthenticatedOnboardingRouteImport.update({
+  id: '/onboarding',
+  path: '/onboarding',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 const AuthenticatedDocumentsRoute = AuthenticatedDocumentsRouteImport.update({
@@ -187,6 +193,7 @@ export interface FileRoutesByFullPath {
   '/announcements': typeof AuthenticatedAnnouncementsRoute
   '/deals': typeof AuthenticatedDealsRoute
   '/documents': typeof AuthenticatedDocumentsRoute
+  '/onboarding': typeof AuthenticatedOnboardingRoute
   '/payments': typeof AuthenticatedPaymentsRoute
   '/portal': typeof AuthenticatedPortalRoute
   '/portfolio': typeof AuthenticatedPortfolioRoute
@@ -214,6 +221,7 @@ export interface FileRoutesByTo {
   '/announcements': typeof AuthenticatedAnnouncementsRoute
   '/deals': typeof AuthenticatedDealsRoute
   '/documents': typeof AuthenticatedDocumentsRoute
+  '/onboarding': typeof AuthenticatedOnboardingRoute
   '/payments': typeof AuthenticatedPaymentsRoute
   '/portal': typeof AuthenticatedPortalRoute
   '/portfolio': typeof AuthenticatedPortfolioRoute
@@ -243,6 +251,7 @@ export interface FileRoutesById {
   '/_authenticated/announcements': typeof AuthenticatedAnnouncementsRoute
   '/_authenticated/deals': typeof AuthenticatedDealsRoute
   '/_authenticated/documents': typeof AuthenticatedDocumentsRoute
+  '/_authenticated/onboarding': typeof AuthenticatedOnboardingRoute
   '/_authenticated/payments': typeof AuthenticatedPaymentsRoute
   '/_authenticated/portal': typeof AuthenticatedPortalRoute
   '/_authenticated/portfolio': typeof AuthenticatedPortfolioRoute
@@ -272,6 +281,7 @@ export interface FileRouteTypes {
     | '/announcements'
     | '/deals'
     | '/documents'
+    | '/onboarding'
     | '/payments'
     | '/portal'
     | '/portfolio'
@@ -299,6 +309,7 @@ export interface FileRouteTypes {
     | '/announcements'
     | '/deals'
     | '/documents'
+    | '/onboarding'
     | '/payments'
     | '/portal'
     | '/portfolio'
@@ -327,6 +338,7 @@ export interface FileRouteTypes {
     | '/_authenticated/announcements'
     | '/_authenticated/deals'
     | '/_authenticated/documents'
+    | '/_authenticated/onboarding'
     | '/_authenticated/payments'
     | '/_authenticated/portal'
     | '/_authenticated/portfolio'
@@ -424,6 +436,13 @@ declare module '@tanstack/react-router' {
       path: '/payments'
       fullPath: '/payments'
       preLoaderRoute: typeof AuthenticatedPaymentsRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/onboarding': {
+      id: '/_authenticated/onboarding'
+      path: '/onboarding'
+      fullPath: '/onboarding'
+      preLoaderRoute: typeof AuthenticatedOnboardingRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/documents': {
@@ -546,6 +565,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedAnnouncementsRoute: typeof AuthenticatedAnnouncementsRoute
   AuthenticatedDealsRoute: typeof AuthenticatedDealsRoute
   AuthenticatedDocumentsRoute: typeof AuthenticatedDocumentsRoute
+  AuthenticatedOnboardingRoute: typeof AuthenticatedOnboardingRoute
   AuthenticatedPaymentsRoute: typeof AuthenticatedPaymentsRoute
   AuthenticatedPortalRoute: typeof AuthenticatedPortalRoute
   AuthenticatedPortfolioRoute: typeof AuthenticatedPortfolioRoute
@@ -572,6 +592,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedAnnouncementsRoute: AuthenticatedAnnouncementsRoute,
   AuthenticatedDealsRoute: AuthenticatedDealsRoute,
   AuthenticatedDocumentsRoute: AuthenticatedDocumentsRoute,
+  AuthenticatedOnboardingRoute: AuthenticatedOnboardingRoute,
   AuthenticatedPaymentsRoute: AuthenticatedPaymentsRoute,
   AuthenticatedPortalRoute: AuthenticatedPortalRoute,
   AuthenticatedPortfolioRoute: AuthenticatedPortfolioRoute,

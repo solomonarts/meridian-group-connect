@@ -309,7 +309,16 @@ export const getMyOnboardingStatus = createServerFn({ method: "GET" })
       .select("must_change_password, full_name, avatar_url, phone, bio, country, email, onboarded_at")
       .eq("id", context.userId)
       .maybeSingle();
-    return data ?? { must_change_password: false };
+    return {
+      must_change_password: data?.must_change_password ?? false,
+      full_name: data?.full_name ?? null,
+      email: data?.email ?? null,
+      country: data?.country ?? null,
+      phone: data?.phone ?? null,
+      bio: data?.bio ?? null,
+      avatar_url: data?.avatar_url ?? null,
+      onboarded_at: data?.onboarded_at ?? null,
+    };
   });
 
 export const completeOnboarding = createServerFn({ method: "POST" })
