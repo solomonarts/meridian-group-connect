@@ -56,7 +56,7 @@ function SidebarBody({
   return (
     <div className="flex h-full w-full flex-col text-navy-foreground" style={{ background: "var(--gradient-navy)" }}>
       <div className="flex items-center gap-3 px-6 pt-8 pb-8">
-        <img src={tbsLogo.url} alt="TBS Meridian Realities" className="h-12 w-12 rounded-md object-cover ring-1 ring-white/10" />
+        <img src={tbsLogo.url} alt="TBS Meridian Realities" className="h-12 w-12 rounded-md bg-white object-contain p-1 ring-1 ring-gold/30" />
         <div>
           <div className="text-base font-bold tracking-[0.18em]">TBS MERIDIAN</div>
           <div className="mt-0.5 text-[10px] font-semibold tracking-[0.3em] text-gold/90">{label}</div>
