@@ -722,12 +722,14 @@ function Footer() {
         <div className="grid gap-12 md:grid-cols-4">
           <div>
             <div className="flex items-center gap-3">
-              <div className="flex h-11 w-11 items-center justify-center rounded-lg bg-white/95 p-1">
-                <img src={tbsLogo.url} alt="TBS Meridian Realities" className="h-full w-full object-contain" />
-              </div>
+              <img
+                src={tbsLogo.url}
+                alt="TBS Meridian Realities"
+                className="h-14 w-14 rounded-lg bg-white object-contain p-1 ring-1 ring-gold/30"
+              />
               <div>
-                <div className="text-sm font-bold tracking-[0.25em]">TBS</div>
-                <div className="text-[10px] font-medium tracking-[0.25em] text-gold/90">MERIDIAN REALITIES</div>
+                <div className="text-sm font-bold tracking-[0.25em]">TBS MERIDIAN</div>
+                <div className="text-[10px] font-medium tracking-[0.25em] text-gold/90">REALITIES</div>
               </div>
             </div>
             <p className="mt-5 text-sm leading-relaxed text-navy-muted">
