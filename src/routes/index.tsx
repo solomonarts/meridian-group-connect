@@ -1,12 +1,12 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useState, type ReactNode } from "react";
-import tbsLogo from "@/assets/tbs-logo.jpeg.asset.json";
 import { supabase } from "@/integrations/supabase/client";
 
 import { AuditDrawer } from "@/components/audit-drawer";
 import { LivePortfolio } from "@/components/live-portfolio";
 import { ReportsCharts } from "@/components/reports-charts";
 
+const TBS_LOGO_URL = "/tbs-meridian-logo.jpeg";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -23,7 +23,7 @@ export const Route = createFileRoute("/")({
         content:
           "A disciplined member institution pooling capital to acquire income-generating real estate and cash-flow assets.",
       },
-      { property: "og:image", content: tbsLogo.url },
+      { property: "og:image", content: TBS_LOGO_URL },
     ],
   }),
   component: Home,
@@ -90,7 +90,7 @@ function Header() {
       <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4 text-navy-foreground">
         <a href="#top" className="flex items-center gap-3">
           <img
-            src={tbsLogo.url}
+            src={TBS_LOGO_URL}
             alt="TBS Meridian Realities"
             className="h-14 w-14 rounded-lg bg-white object-contain p-1 shadow-[var(--shadow-glow)] ring-1 ring-gold/30"
           />
@@ -723,7 +723,7 @@ function Footer() {
           <div>
             <div className="flex items-center gap-3">
               <img
-                src={tbsLogo.url}
+                src={TBS_LOGO_URL}
                 alt="TBS Meridian Realities"
                 className="h-14 w-14 rounded-lg bg-white object-contain p-1 ring-1 ring-gold/30"
               />
